@@ -9,7 +9,7 @@ app = dash.Dash(__name__)
 server = app.server
 
 app.layout = html.Div(
-    [html.H1('This ist a Website represesenting interactive Youtube Data')
+    [html.H1('This ist a Website represesenting interactive Youtube Data'),
      html.H3('Datascience project CAU Kiel')
 
     ]
