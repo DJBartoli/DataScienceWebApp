@@ -11,8 +11,6 @@ server = app.server
 with open('custom.geo.json', encoding='utf-8') as f:
     geojson_data = json.load(f)
 
-
-
 # ------------------------------------------------------------------------------
 # App layout
 # Layout of the home page
