@@ -119,7 +119,7 @@ project_1_layout = html.Div(
 )
 project_1_2_layout = html.Div([
     dbc.Row(dbc.Col(html.H2('Youtube Video Length Development'),
-                width={'size':6, 'offset': 1},
+                width={'size':5, 'offset': 1},
                 ),
         ),
     dbc.Row(dbc.Col(html.Div('''
@@ -137,7 +137,7 @@ project_1_2_layout = html.Div([
                                 ],
                                 value='original_data'
                             ),
-                width={'size': 2, 'offset': 4, 'order': 0}
+                width={'size': 2, 'offset': 5, 'order': 0}
                 ),
             dbc.Col(
                 ),
