@@ -41,6 +41,8 @@ urllib3 = "==2.2.1"
 werkzeug = "==3.0.1"
 zipp = "==3.18.0"
 geojson = "*"
+dash-ag-grid = "*"
+dash-bootstrap-components = "*"
 
 [dev-packages]
 

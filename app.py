@@ -4,8 +4,9 @@ from dash import dcc, html
 from dash.dependencies import Input, Output
 import plotly.express as px
 import json
+import dash_bootstrap_components as dbc
 
-app = dash.Dash(__name__, suppress_callback_exceptions=True)
+app = dash.Dash(__name__)
 server = app.server
 
 dark_colors = {
@@ -89,10 +90,10 @@ project_1_layout = html.Div(
             className='row',
             children=[
                 html.Div(
-                    className='col-md-6',  # Verwenden Sie 'col-md-6', um die Hälfte der Seite einzunehmen
+                    className='col-md-6',  
                     children=[
                         html.Div(
-                            style={'width': '50%', 'height': '100vh'},  # 100% Breite und Höhe der Seite
+                            style={'width': '50%', 'height': '100vh'},  
                             children=[
                                 dcc.Graph(id='map-graph', figure=world_map)
                             ]
@@ -100,10 +101,10 @@ project_1_layout = html.Div(
                     ]
                 ),
                 html.Div(
-                    className='col-md-6',  # Verwenden Sie 'col-md-6', um die Hälfte der Seite einzunehmen
+                    className='col-md-6',  
                     children=[
                         html.Div(
-                            style={'width': '50%', 'height': '100vh'},  # 100% Breite und Höhe der Seite
+                            style={'width': '50%', 'height': '100vh'},
                             children=[
                                 html.Div(children=[
                                     'new stuff'
@@ -116,42 +117,102 @@ project_1_layout = html.Div(
         )
     ]
 )
-
-# Layout für Project 1-2
-project_1_2_layout = html.Div(
-    className='container-fluid',
-    children=[
-        html.H1(children="Youtube Video Length Development"),
-        html.Div(children='''
-            The development of the video duration over the past 10 years.
-        '''),
-        html.Div(
-            className='row',
-            children=[
-                html.Div(
-                    className='col-md-3',
-                    children=[
-                        dcc.Dropdown(
-                            id='data-dropdown',
-                            options=[
+project_1_2_layout = html.Div([
+    dbc.Row(dbc.Col(html.H2('Youtube Video Length Development'),
+                width={'size':6, 'offset': 1},
+                ),
+        ),
+    dbc.Row(dbc.Col(html.Div('''
+                        The development of the video duration over the past 10 years.
+                    '''),
+                width={'size': 4, 'offset': 1}
+                ),
+        ),
+    dbc.Row(
+        [
+            dbc.Col(dcc.Dropdown(id='data-dropdown',
+                                options=[
                                 {'label': 'Original Data', 'value': 'original_data'},
                                 {'label': 'Filtered Data', 'value': 'filtered_data'},
-                            ],
-                            value='original_data'
-                        )
-                    ]
+                                ],
+                                value='original_data'
+                            ),
+                width={'size': 2, 'offset': 4, 'order': 0}
                 ),
-                html.Div(
-                    className='col-md-9',
-                    children=[
-                        dcc.Graph(id='video-length-bar'),
-                        dcc.Graph(id='video-length-lineplot')
-                    ]
-                )
-            ]
-        )
-    ]
-)
+            dbc.Col(
+                ),
+        ]
+    ),
+    dbc.Row(
+        [
+            dbc.Col(html.H1()
+                ),
+            dbc.Col(
+                ),
+        ]
+    ),
+    dbc.Row(
+        [
+            dbc.Col(dcc.Graph(id='video-length-bar'),
+                width={'size': 6, 'offset': 1}
+                ),
+            dbc.Col(
+                ),
+        ]
+    ),
+    dbc.Row(
+        [
+            dbc.Col(html.H1()
+                ),
+            dbc.Col(
+                ),
+        ]
+    ),
+    dbc.Row(
+        [
+            dbc.Col(dcc.Graph(id='video-length-lineplot'),
+                width={'size': 6, 'offset': 1}
+                ),
+            dbc.Col(
+                ),
+        ]
+    ),
+])
+# Layout für Project 1-2
+# project_1_2_layout = html.Div(
+#     className='container-fluid',
+#     children=[
+#         html.H1(children="Youtube Video Length Development"),
+#         html.Div(children='''
+#             The development of the video duration over the past 10 years.
+#         '''),
+#         html.Div(
+#             className='row',
+#             children=[
+#                 html.Div(
+#                     style={'width': '20%', 'height': '10vh'},
+#                     children=[
+#                         dcc.Dropdown(
+#                             id='data-dropdown',
+#                             options=[
+#                                 {'label': 'Original Data', 'value': 'original_data'},
+#                                 {'label': 'Filtered Data', 'value': 'filtered_data'},
+#                             ],
+#                             value='original_data'
+#                         )
+#                     ]
+#                 ),
+#                 html.Div(
+#                     style={'width': '70%', 'height': '100vh'},
+#                     children=[
+#                         dcc.Graph(id='video-length-bar'),
+#                         dcc.Graph(id='video-length-lineplot')
+#                     ]
+#                 )
+#             ]
+#         )
+#     ]
+# )
 
 # Layout for Project 2
 project_2_layout = html.Div(
