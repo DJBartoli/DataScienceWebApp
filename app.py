@@ -5,13 +5,60 @@ from dash.dependencies import Input, Output
 import plotly.express as px
 import json
 
-app = dash.Dash(__name__)
+app = dash.Dash(__name__, suppress_callback_exceptions=True)
 server = app.server
 
-with open('custom.geo.json', encoding='utf-8') as f:
+dark_colors = {
+ 'text': '#eae9fc',
+ 'background': '#292929',
+ 'primary': '#67a2d2',
+ 'secondary': '#121212',
+ 'accent': '#ff0000'
+}
+light_colors = {
+ 'text': '#040316',
+ 'background': '#d6d6d6',
+ 'primary': '#2e6999',
+ 'secondary': '#ededed',
+ 'accent': '#dd2b2b'
+},
+
+with open('custom.geo_small.json', encoding='utf-8') as f:
     geojson_data = json.load(f)
 
+video_length_data = pd.read_csv('VideoLengthData.csv')
+filtered_video_length_data = pd.read_csv('Filtered_VideoLengthData.csv')
 
+video_length_bar = px.bar(
+    video_length_data,
+    x='Year',
+    y='Duration_minutes',
+    color='Category Title',
+    barmode='group',
+    labels={'Year': 'Year', 'Duration_minutes': 'Duration in Minutes'}
+)
+
+video_length_lineplot = px.line(
+    video_length_data,
+    x='Year',
+    y='Duration_minutes',
+    color='Category Title',
+    hover_data={'Category Title', 'Duration_minutes'},
+    labels={'Year': 'Year', 'Duration_minutes': 'Duration in Minutes'},
+    markers=True
+    # hover_name={'Category Title': 'Category', 'Duration_minutes': 'Duration in Minutes'},
+)
+
+world_map = px.choropleth_mapbox(
+    geojson=geojson_data,
+    # locations=df['location'],  # Add the appropriate location data from the DataFrame
+    featureidkey="properties.id",  # Adjust this according to your GeoJSON structure
+    # color=df['property_to_color'],  # Add the appropriate column from the DataFrame for color representation
+    mapbox_style="carto-positron",
+    zoom=3,  # Adjust the zoom level
+    center={"lat": 51, "lon": 9},  # Adjust the center accordingly
+    opacity=0.5
+)
 
 # ------------------------------------------------------------------------------
 # App layout
@@ -22,6 +69,8 @@ home_layout = html.Div(
         html.Div("Select a project to visualize:"),
         dcc.Link("Project 1", href="/project-1"),
         html.Br(),
+        dcc.Link("Project 1.2", href="/project-1.2"),
+        html.Br(),
         dcc.Link("Project 2", href="/project-2"),
         html.Br(),
         dcc.Link("Project 3", href="/project-3"),
@@ -30,9 +79,77 @@ home_layout = html.Div(
 
 # Layout for Project 1
 project_1_layout = html.Div(
+    className='container-fluid',
     children=[
-        html.H1("Project 1"),
-        dcc.Graph(id='map-graph')
+        html.H1(children="Youtube Trends Analytics"),
+        html.Div(children='''
+            A interactive Worldmap.
+        '''),
+        html.Div(
+            className='row',
+            children=[
+                html.Div(
+                    className='col-md-6',  # Verwenden Sie 'col-md-6', um die Hälfte der Seite einzunehmen
+                    children=[
+                        html.Div(
+                            style={'width': '50%', 'height': '100vh'},  # 100% Breite und Höhe der Seite
+                            children=[
+                                dcc.Graph(id='map-graph', figure=world_map)
+                            ]
+                        )
+                    ]
+                ),
+                html.Div(
+                    className='col-md-6',  # Verwenden Sie 'col-md-6', um die Hälfte der Seite einzunehmen
+                    children=[
+                        html.Div(
+                            style={'width': '50%', 'height': '100vh'},  # 100% Breite und Höhe der Seite
+                            children=[
+                                html.Div(children=[
+                                    'new stuff'
+                                ])
+                            ]
+                        )
+                    ]
+                )
+            ]
+        )
+    ]
+)
+
+# Layout für Project 1-2
+project_1_2_layout = html.Div(
+    className='container-fluid',
+    children=[
+        html.H1(children="Youtube Video Length Development"),
+        html.Div(children='''
+            The development of the video duration over the past 10 years.
+        '''),
+        html.Div(
+            className='row',
+            children=[
+                html.Div(
+                    className='col-md-3',
+                    children=[
+                        dcc.Dropdown(
+                            id='data-dropdown',
+                            options=[
+                                {'label': 'Original Data', 'value': 'original_data'},
+                                {'label': 'Filtered Data', 'value': 'filtered_data'},
+                            ],
+                            value='original_data'
+                        )
+                    ]
+                ),
+                html.Div(
+                    className='col-md-9',
+                    children=[
+                        dcc.Graph(id='video-length-bar'),
+                        dcc.Graph(id='video-length-lineplot')
+                    ]
+                )
+            ]
+        )
     ]
 )
 
@@ -60,6 +177,8 @@ project_3_layout = html.Div(
 def display_page(pathname):
     if pathname == "/project-1":
         return project_1_layout
+    elif pathname == "/project-1.2":
+        return project_1_2_layout
     elif pathname == "/project-2":
         return project_2_layout
     elif pathname == "/project-3":
@@ -77,33 +196,22 @@ app.layout = html.Div(
 
 
 # ------------------------------------------------------------------------------
-# Connect the Plotly graphs with Dash Components
+# Callbacks
 @app.callback(
-    Output('map-graph', 'figure'),
-    [Input('url', 'pathname')]
+    [Output('video-length-bar', 'figure'),
+     Output('video-length-lineplot', 'figure')],
+    [Input('data-dropdown', 'value')]
 )
-def update_map(pathname):
-    if pathname == '/project-1':  # Update the map only for Project 1
-        # Dummy DataFrame for demonstration purposes
-        df = pd.DataFrame({
-            'location': ['Location1', 'Location2', 'Location3'],  # Sample location data
-            'property_to_color': [10, 20, 30]  # Sample data for color representation
-        })
-        
-        fig = px.choropleth_mapbox(
-            geojson=geojson_data,
-            locations=df['location'],  # Add the appropriate location data from the DataFrame
-            featureidkey="properties.id",  # Adjust this according to your GeoJSON structure
-            color=df['property_to_color'],  # Add the appropriate column from the DataFrame for color representation
-            mapbox_style="carto-positron",
-            zoom=3,  # Adjust the zoom level
-            center={"lat": 51, "lon": 9},  # Adjust the center accordingly
-            opacity=0.5
-        )
-        fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})  # Layout adjustments
-        return fig
-    else:
-        return {}
+def update_graphs(selected_data):
+    if selected_data == 'original_data':
+        data_to_use = video_length_data
+    elif selected_data == 'filtered_data':
+        data_to_use = filtered_video_length_data
+
+    bar_fig = px.bar(data_to_use, x='Year', y='Duration_minutes', color='Category Title', barmode='group')
+    line_fig = px.line(data_to_use, x='Year', y='Duration_minutes', color='Category Title')
+
+    return bar_fig, line_fig
 # ------------------------------------------------------------------------------
 # Starting the Dash app
 if __name__ == "__main__":
