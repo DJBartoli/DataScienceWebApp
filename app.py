@@ -281,6 +281,11 @@ def update_graphs(selected_data):
     )
     bar_fig.update_traces(hovertemplate='Duration: %{y:.2f} min')
 
+    bar_fig.update_layout(
+    plot_bgcolor='#e7e7e7',
+    paper_bgcolor='#d1d1d1',
+    )
+
     line_fig = px.line(
         data_to_use,
         x='Year',
@@ -294,8 +299,8 @@ def update_graphs(selected_data):
     line_fig.update_traces(hovertemplate='Duration: %{y:.2f} min')
 
     line_fig.update_layout(
-    plot_bgcolor='#1f2630',
-    paper_bgcolor='#ededed',
+    plot_bgcolor='#e7e7e7',
+    paper_bgcolor='#d1d1d1',
     )
 
     return bar_fig, line_fig
