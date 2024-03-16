@@ -4,6 +4,7 @@ from dash import dcc, html
 from dash.dependencies import Input, Output
 import plotly.express as px
 import json
+
 # external_stylesheets = ['C://Users//dante//OneDrive//Studium//Data_Science_Projekt//WebApp//DataScienceWebApp//style.css']
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 app = dash.Dash(__name__, suppress_callback_exceptions=True, external_stylesheets=external_stylesheets)
@@ -89,12 +90,7 @@ project_1_layout = html.Div(
         html.Div(
             className='row',
             children=[
-                html.Div(
-<<<<<<< HEAD
-                    className='ten.columns',  # Verwenden Sie 'col-md-6', um die Hälfte der Seite einzunehmen
-=======
-                    className='col-md-6',  
->>>>>>> 9304098bc55606849e63713b2e1a88315a6d830c
+                html.Div( className='col-md-6', # Verwenden Sie 'col-md-6', um die Hälfte der Seite einzunehmen
                     children=[
                         html.Div(
                             style={'width': '50%', 'height': '100vh'},  
