@@ -4,10 +4,9 @@ from dash import dcc, html
 from dash.dependencies import Input, Output
 import plotly.express as px
 import json
+import dash_bootstrap_components as dbc
 
-# external_stylesheets = ['C://Users//dante//OneDrive//Studium//Data_Science_Projekt//WebApp//DataScienceWebApp//style.css']
-external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
-app = dash.Dash(__name__, suppress_callback_exceptions=True, external_stylesheets=external_stylesheets)
+app = dash.Dash(__name__)
 server = app.server
 
 dark_colors = {
@@ -89,7 +88,8 @@ project_1_layout = html.Div(
         html.Div(
             className='row',
             children=[
-                html.Div( className='col-md-6', # Verwenden Sie 'col-md-6', um die Hälfte der Seite einzunehmen
+                html.Div(
+                    className='ten.columns',  # Verwenden Sie 'col-md-6', um die Hälfte der Seite einzunehmen
                     children=[
                         html.Div(
                             style={'width': '50%', 'height': '100vh'},  
