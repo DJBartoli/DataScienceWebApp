@@ -31,25 +31,24 @@ with open('custom.geo_small.json', encoding='utf-8') as f:
 video_length_data = pd.read_csv('VideoLengthData.csv')
 filtered_video_length_data = pd.read_csv('Filtered_VideoLengthData.csv')
 
-video_length_bar = px.bar(
-    video_length_data,
-    x='Year',
-    y='Duration_minutes',
-    color='Category Title',
-    barmode='group',
-    labels={'Year': 'Year', 'Duration_minutes': 'Duration in Minutes'}
-)
+# video_length_bar = px.bar(
+#     video_length_data,
+#     x='Year',
+#     y='Duration_minutes',
+#     color='Category Title',
+#     barmode='group',
+#     labels={'Year': 'Year', 'Duration_minutes': 'Duration in Minutes'}
+# )
 
-video_length_lineplot = px.line(
-    video_length_data,
-    x='Year',
-    y='Duration_minutes',
-    color='Category Title',
-    hover_data={'Category Title', 'Duration_minutes'},
-    labels={'Year': 'Year', 'Duration_minutes': 'Duration in Minutes'},
-    markers=True
-    # hover_name={'Category Title': 'Category', 'Duration_minutes': 'Duration in Minutes'},
-)
+# video_length_lineplot = px.line(
+#     video_length_data,
+#     x='Year',
+#     y='Duration_minutes',
+#     color='Category Title',
+#     markers=True,
+#     labels={'Year': 'Year', 'Duration_minutes': 'Duration in Minutes'},
+#     hover_data={'Category Title': True, 'Duration_minutes': ':.2f'}
+# )
 
 world_map = px.choropleth_mapbox(
     geojson=geojson_data,
@@ -269,8 +268,34 @@ def update_graphs(selected_data):
     elif selected_data == 'filtered_data':
         data_to_use = filtered_video_length_data
 
-    bar_fig = px.bar(data_to_use, x='Year', y='Duration_minutes', color='Category Title', barmode='group')
-    line_fig = px.line(data_to_use, x='Year', y='Duration_minutes', color='Category Title')
+    bar_fig = px.bar(
+        data_to_use,
+        x='Year',
+        y='Duration_minutes',
+        color='Category Title',
+        barmode='group',
+        labels={'Year': 'Year', 'Duration_minutes': 'Duration in Minutes'},
+        hover_data={'Category Title': False, 'Duration_minutes': ':.2f', 'Year': False},
+        hover_name= 'Category Title'
+    )
+    bar_fig.update_traces(hovertemplate='Duration: %{y:.2f} min')
+
+    line_fig = px.line(
+        data_to_use,
+        x='Year',
+        y='Duration_minutes',
+        color='Category Title',
+        markers=True,
+        labels={'Year': 'Year', 'Duration_minutes': 'Duration in Minutes'},
+        hover_data={'Category Title': False, 'Duration_minutes': ':.2f', 'Year': False},
+        hover_name= 'Category Title'
+    )
+    line_fig.update_traces(hovertemplate='Duration: %{y:.2f} min')
+
+    line_fig.update_layout(
+    plot_bgcolor='#1f2630',
+    paper_bgcolor='#ededed',
+    )
 
     return bar_fig, line_fig
 # ------------------------------------------------------------------------------
