@@ -1,8 +1,9 @@
 import pandas as pd
 import dash
 from dash import dcc, html
-from dash.dependencies import Input, Output
 import plotly.express as px
+import dash_bootstrap_components as dbc
+from dash.dependencies import Input, Output
 import json
 
 # external_stylesheets = ['C://Users//dante//OneDrive//Studium//Data_Science_Projekt//WebApp//DataScienceWebApp//style.css']
