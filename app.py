@@ -1,13 +1,21 @@
 import os
+from datetime import datetime, timedelta
+
+import json
+
 import pandas as pd
+
+from geopy.geocoders import Nominatim
+
 import dash
 from dash import dcc, html
-import plotly.express as px
-import dash_bootstrap_components as dbc
 from dash.dependencies import Input, Output
-import json
 import dash_bootstrap_components as dbc
-from datetime import datetime
+
+import plotly.express as px
+
+
+
 
 app = dash.Dash(__name__)
 server = app.server
@@ -27,6 +35,8 @@ light_colors = {
  'accent': '#dd2b2b'
 },
 
+geolocator = Nominatim(user_agent="country_locator")
+
 with open('data\\europe.geojson', encoding='utf-8') as f:
     geojson_data = json.load(f)
 
@@ -38,7 +48,6 @@ data_folder = 'data\\Trends100vRegions'
 eu_countries_iso2 = {
     'Austria': 'AT',
     'Australia':'AU',
-    'Belarus': 'BY',
     'Belgium': 'BE',
     'Brazil':'BR',
     'Bulgaria': 'BG',
@@ -62,7 +71,7 @@ eu_countries_iso2 = {
     'Luxembourg': 'LU',
     'Malta': 'MT',
     'Netherlands': 'NL',
-    'Niger':'NI',
+    'Niger':'NG',
     'Poland': 'PL',
     'Portugal': 'PT',
     'Romania': 'RO',
@@ -73,6 +82,35 @@ eu_countries_iso2 = {
     'United Kingdom': 'GB',
     'USA':'US',
 }
+
+channels = [
+    'baldandbankrupt',
+    'BestEverFoodReviewShow',
+    'ColdFusion',
+    'HaraldBaldr',
+    'PracticalEngineeringChannel',
+    'RoCarsTV',
+    'strictlydumpling',
+    'tavarish',
+    'theonlyzanny',
+    'thespiffingbrit',
+    'TravelThirstyBlog',
+    'YesTheory'
+]
+
+def get_country_coordinates(country):
+    location = geolocator.geocode(country)
+    if location:
+        return location.latitude, location.longitude
+    else:
+        return None, None
+
+pie_data = pd.read_csv(f'{data_folder}/DE_category_distribution.csv')
+df_selected_date = pie_data[pie_data['Execution Date'] == '2024-03-15']
+selected_pie_data = df_selected_date.groupby('Category Title')['Quantity'].sum().reset_index()
+pie_first_data = px.pie(selected_pie_data, values='Quantity', names='Category Title',hover_data={'Category Title':False,'Quantity':True}, hover_name='Category Title')
+pie_first_data.update_traces(hovertemplate='Quantity')
+
 
 # ------------------------------------------------------------------------------
 # App layout
@@ -85,15 +123,16 @@ home_layout = html.Div(
         html.Br(),
         dcc.Link("Video Length Development", href="/video-length"),
         html.Br(),
+        dcc.Link("Comment behavior", href="/comment-behavior"),
+        html.Br(),
         dcc.Link("Project 2", href="/project-2"),
         html.Br(),
         dcc.Link("Project 3", href="/project-3"),
         html.Br(),
-        dcc.Link("Home", href="/"),
     ]
 )
 
-# Layout for Project 1
+# Layout for Daily Trends Analytics
 project_1_layout = html.Div([
     dbc.Row(
         [
@@ -115,22 +154,6 @@ project_1_layout = html.Div([
             ),
         ]
     ),
-    # dbc.Row(dbc.Col(html.Div('''
-    #                     A interactive Worldmap.
-    #                 '''),
-    #             width={'size': 4, 'offset': 1}
-    #             ),
-    #     ),
-    # dbc.Row(
-    #     [
-    #         dbc.Col(dcc.Graph(id='europe-map', config={'scrollZoom': False}),
-    #             width={'size':5,'offset':1},
-    #             ),
-    #         dbc.Col(html.Div(id='iso2-output'),
-    #             width={'size':4, 'offset':1},
-    #             ),
-    #     ]
-    # ),
     dbc.Row([
         dbc.Col(
             dcc.Dropdown(
@@ -145,20 +168,43 @@ project_1_layout = html.Div([
             dcc.DatePickerSingle(
                 id='date-picker',
                 min_date_allowed=datetime(2024, 3, 6),
-                max_date_allowed=datetime.today(),
+                max_date_allowed=(datetime.today() - timedelta(days=1)),
                 initial_visible_month=datetime.today(),
-                date=datetime.today()
+                date=(datetime(2024, 3, 15))
             ),
             width={'size': 1, 'offset': 1, 'order': 0}
         ),
     ]),
     dbc.Row([
         dbc.Col(
-            dcc.Graph(id='pie-chart'),
+            dcc.Graph(id='pie-chart', figure=pie_first_data),
+            width={'size':4, 'offset':1}
+        ),
+        dbc.Col(
+            dcc.Graph(id='map-graph'),
+            width={'size':4, 'offset':0}
+        )
+    ]),
+    dbc.Row([
+        dbc.Col(html.H5('''
+            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
+            sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+            At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+            '''),
+            width={'size':4, 'offset':1}
+        ),
+        dbc.Col(html.H5('''
+            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
+            sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+            At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+            '''),
             width={'size':4, 'offset':1}
         )
     ])
 ])
+# Layout for Video Length Development
 project_1_2_layout = html.Div([
     dbc.Row(
         [
@@ -244,6 +290,54 @@ project_1_2_layout = html.Div([
     ),
 ])
 
+# Layout for Comment behavior
+project_1_3_layout = html.Div([
+    dbc.Row(
+        [
+            dbc.Col(
+                html.H2('Youtube Comment behavior', style={'color': '#dd2b2b'}),
+                width={'size': 5, 'offset': 1},
+            ),
+            dbc.Col(
+                html.Div(
+                    [
+                        html.Br(),
+                        dcc.Link("Home", href="/"),
+                    ],
+                    style={'display': 'flex', 'justify-content': 'center', 'align-items': 'center'}
+                ),
+                width={'size':1, 'offset':5},
+                className="bg-dark border",
+                style={'color': '#2e6999'}
+            ),
+        ]
+    ),
+    dbc.Row([
+        dbc.Col(dcc.Dropdown(
+                    id='channel-dropdown',
+                    options=[{'label': channel, 'value': channel} for channel in channels],
+                    value=channels[0]
+                    ),
+                style={'color':'#262626'},
+                width={'size':2, 'offset':1}
+            ),
+        dbc.Col(dcc.Dropdown(
+                    id='value-dropdown',
+                    options=[
+                    {'label': 'Relative Probability', 'value': 'Relative Probability (%)'},
+                    {'label': 'Average per Video', 'value': 'Average per Video'}
+                    ],
+                    value='Relative Probability (%)'
+                ),
+                style={'color':'#262626'},
+                width={'size':2, 'offset':0}
+        )
+    ]),
+    dbc.Row([
+        dbc.Col(dcc.Graph(id='comment-bar-chart'), width={'size':10,'offset':1})
+    ])
+])
+
 # Layout for Project 2
 project_2_layout = html.Div(
     children=[
@@ -270,6 +364,8 @@ def display_page(pathname):
         return project_1_layout
     elif pathname == "/video-length":
         return project_1_2_layout
+    elif pathname == "/comment-behavior":
+        return project_1_3_layout
     elif pathname == "/project-2":
         return project_2_layout
     elif pathname == "/project-3":
@@ -348,20 +444,93 @@ def update_pie_chart(selected_country, selected_date):
     if selected_country is None or selected_date is None:
         return {}
 
-    # Lade die Daten aus der CSV-Datei
     file_path = f'{data_folder}/{selected_country}_category_distribution.csv'
     df = pd.read_csv(file_path)
 
-    # Filtere nach dem ausgewählten Datum
-    selected_date = datetime.strptime(selected_date, '%Y-%m-%d')
+    selected_date = datetime.strptime(selected_date[:10], '%Y-%m-%d')
     df_selected_date = df[df['Execution Date'] == selected_date.strftime('%Y-%m-%d')]
 
-    # Gruppiere nach Kategorie und berechne die Summe der Menge
+    if df_selected_date.empty:
+        return {
+            'data': [],
+            'layout': {
+                'annotations': [{
+                    'text': 'No data available for the selected date.',
+                    'x': 3,
+                    'y': 2.5,
+                    'showarrow': False,
+                    'font': {
+                        'size': 25
+                    }
+                }],
+                'showlegend': False
+            }
+        }
     df_grouped = df_selected_date.groupby('Category Title')['Quantity'].sum().reset_index()
+    pie = px.pie(df_grouped, values='Quantity', names='Category Title', hover_name='Category Title')
+    pie.update_traces(hovertemplate='%{hovertext}')
+    pie.update_layout(
+        showlegend=False,
+        plot_bgcolor='#e7e7e7',
+        paper_bgcolor='#d1d1d1',
+    )
+    return pie
 
-    # Erstelle das Tortendiagramm
-    fig = px.pie(df_grouped, values='Quantity', names='Category Title')
-    return fig
+@app.callback(
+    Output('map-graph', 'figure'),
+    [Input('country-dropdown', 'value')]
+)     
+def update_map(selected_country):
+    if selected_country is None:
+        return {}
+
+    # Lade die Koordinaten für das ausgewählte Land
+    country_lat, country_lon = get_country_coordinates(selected_country)
+
+    # Erstelle eine Karte mit dem ausgewählten Land zentriert
+    map_fig = px.choropleth_mapbox(
+        color=[1],
+        mapbox_style="carto-positron",
+        center={"lat": country_lat, "lon": country_lon},
+        zoom=3
+    )
+    map_fig.update_layout(
+        plot_bgcolor='#e7e7e7',
+        paper_bgcolor='#d1d1d1',
+        margin={"r":0,"t":0,"l":0,"b":0}
+    )
+    return map_fig
+
+@app.callback(
+    Output('comment-bar-chart', 'figure'),
+    [Input('channel-dropdown', 'value'),
+     Input('value-dropdown', 'value')]
+)
+
+def update_bar_chart(selected_channel, selected_value):
+    data_path = f'data\\comments\\{selected_channel}/'
+    channel_data = pd.read_csv(f'{data_path}development.csv')
+    channel_data = channel_data[channel_data['Day'] <= 100]
+
+    if selected_value == 'Relative Probability (%)':
+        value_title = 'Relative Probability (%)'
+    elif selected_value == 'Average per Video':
+        value_title = 'Average per Video'
+    else:
+        value_title = 'Value'
+
+    comment_fig = px.bar(
+        channel_data,
+        x='Day',
+        y=channel_data[selected_value],
+        labels={'Day': 'Days After Video Release', selected_value: value_title}
+    )
+    comment_fig.update_layout(
+        plot_bgcolor='#e7e7e7',
+        paper_bgcolor='#d1d1d1',
+    )
+
+    return comment_fig
 
 # App starten
 if __name__ == '__main__':
