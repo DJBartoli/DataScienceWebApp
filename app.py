@@ -2,6 +2,7 @@ import pandas as pd
 import dash
 from dash import dcc, html
 import plotly.express as px
+
 import dash_bootstrap_components as dbc
 from dash.dependencies import Input, Output
 import json
@@ -66,7 +67,18 @@ world_map = px.choropleth_mapbox(
 # Layout of the home page
 home_layout = html.Div(
     children=[
-        html.H1("Welcome to the Home Page"),
+        dbc.Row([
+            dbc.Col(
+              html.Img(src='assets/logo.png'),
+                width={'size': 1, 'offset': 4}
+
+            ),
+            dbc.Col(
+                html.H1("Visualizing YouTube", style={'margin-top': '1vh', }),
+
+                width={'size': 3, 'offset': 1},
+            ),
+        ]),
         html.Div("Select a project to visualize:"),
         dcc.Link("Project 1", href="/project-1"),
         html.Br(),
