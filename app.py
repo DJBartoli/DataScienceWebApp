@@ -74,19 +74,6 @@ eu_countries_iso2 = {
     'USA':'US',
 }
 
-# world_map = px.choropleth_mapbox(
-#         # europe_geojson,
-#         locations=['id'],
-#         featureidkey="properties.id",
-#         mapbox_style="carto-positron",
-#         zoom=3,
-#         center={"lat": 51, "lon": 9},
-#         opacity=0.5,
-#         width=800,
-#         height=1000,
-#     )
-# world_map.update_layout(clickmode='event+select')
-
 # ------------------------------------------------------------------------------
 # App layout
 # Layout of the home page
@@ -94,7 +81,7 @@ home_layout = html.Div(
     children=[
         html.H1("Welcome to the Home Page"),
         html.Div("Select a project to visualize:"),
-        dcc.Link("Project 1", href="/project-1"),
+        dcc.Link("Trends Category Distribution", href="/category-dist"),
         html.Br(),
         dcc.Link("Video Length Development", href="/video-length"),
         html.Br(),
@@ -279,7 +266,7 @@ project_3_layout = html.Div(
     [Input("url", "pathname")]
 )
 def display_page(pathname):
-    if pathname == "/project-1":
+    if pathname == "/category-dist":
         return project_1_layout
     elif pathname == "/video-length":
         return project_1_2_layout
