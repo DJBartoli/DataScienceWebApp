@@ -412,7 +412,14 @@ def update_graphs(selected_data):
     bar_fig.update_layout(
         plot_bgcolor='#e7e7e7',
         paper_bgcolor='#d1d1d1',
-        legend_title=common_legend_title 
+        legend_title=common_legend_title,
+        uniformtext_minsize=12,  # Set the minimum font size
+        uniformtext_mode='hide',  # Hide text when there's not enough space
+        bargap=0.1,  # Adjust the gap between bars
+        bargroupgap=0.1,  # Adjust the gap between groups of bars
+        uniformtext=dict(mode='hide', minsize=10),  # Set text size and hiding mode
+        xaxis=dict(showgrid=False),  # Hide the x-axis gridlines
+        yaxis=dict(showgrid=True),  # Hide the y-axis gridlines
     )
 
     line_fig = px.line(
@@ -470,7 +477,7 @@ def update_pie_chart(selected_country, selected_date):
     pie = px.pie(df_grouped, values='Quantity', names='Category Title', hover_name='Category Title')
     pie.update_traces(hovertemplate='%{hovertext}')
     pie.update_layout(
-        showlegend=False,
+        # showlegend=False,
         plot_bgcolor='#e7e7e7',
         paper_bgcolor='#d1d1d1',
     )
