@@ -152,6 +152,18 @@ project_1_layout = html.Div([
             ),
         ]
     ),
+    dbc.Row(dbc.Col(html.H5('''
+                    Here, you can observe the distribution of categories in the top 100 videos per day and country.
+                    The countries available for selection include all EU member states and a selection of interesting countries from each additional continent.
+                    The date selection is available within the range where data is present.
+                    '''),
+            width={'size': 4, 'offset': 1}
+            ),
+    ),
+    dbc.Row(dbc.Col(html.H1('''
+                    '''),
+            ),
+    ),
     dbc.Row([
         dbc.Col(
             dcc.Dropdown(
@@ -160,7 +172,7 @@ project_1_layout = html.Div([
                 value='DE'
             ),
             style={'color':'#262626'},
-            width={'size': 2, 'offset': 0, 'order': 1}
+            width={'size': 2, 'offset': 1, 'order': 1}
         ),
         dbc.Col(
             dcc.DatePickerSingle(
@@ -185,19 +197,11 @@ project_1_layout = html.Div([
     ]),
     dbc.Row([
         dbc.Col(html.H5('''
-            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
-            sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
-            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
-            At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+            
             '''),
             width={'size':4, 'offset':1}
         ),
-        dbc.Col(html.H5('''
-            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
-            sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
-            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
-            At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
-            '''),
+        dbc.Col(
             width={'size':4, 'offset':1}
         )
     ])
@@ -207,7 +211,7 @@ project_1_2_layout = html.Div([
     dbc.Row(
         [
             dbc.Col(
-                html.H2('Youtube Video Length Development', style={'color': '#dd2b2b'}),
+                html.H2('Analysis of Video Duration by Category (2013-2023)', style={'color': '#dd2b2b'}),
                 width={'size': 5, 'offset': 1},
             ),
             dbc.Col(
@@ -224,8 +228,10 @@ project_1_2_layout = html.Div([
             ),
         ]
     ),
-    dbc.Row(dbc.Col(html.Div('''
-                        The development of the video duration over the past 10 years.
+    dbc.Row(dbc.Col(html.H5('''
+                        The following charts illustrate the average duration of videos across various categories over the period from 2013 to 2023 in the USA.
+                        Each line or area represents a distinct category.
+                        This analysis focuses on data from the United States, as it accounts for the highest traffic on the platform, providing a comprehensive overview.
                     '''),
                 width={'size': 4, 'offset': 1}
                 ),
@@ -256,18 +262,12 @@ project_1_2_layout = html.Div([
     ),
     dbc.Row(
         [
-            dbc.Col(dcc.Graph(id='video-length-bar', style={'border-radius': '20px'}),
-                
+            dbc.Col(dcc.Graph(id='video-length-lineplot'),
                 width={'size': 6, 'offset': 1}
-                ),
-            dbc.Col(html.H5('''
-            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
-            sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
-            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
-            At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
-            '''),
+            ),
+            dbc.Col(html.H5(id='text-output'),
             width=4
-                ),
+            ),
         ]
     ),
     dbc.Row(
@@ -280,11 +280,17 @@ project_1_2_layout = html.Div([
     ),
     dbc.Row(
         [
-            dbc.Col(dcc.Graph(id='video-length-lineplot'),
+            dbc.Col(dcc.Graph(id='video-length-bar'),
                 width={'size': 6, 'offset': 1}
-                ),
-            dbc.Col(
-                ),
+            ),
+            dbc.Col(html.H5('''
+                    In the upper graph, it is evident how the average video duration significantly decreases in the 'Film & Animation' category,
+                    as a large number of short films are included in the most-viewed videos over time. In the lower diagram, this category has been filtered out,
+                    resulting in a much clearer trend. Up until the Short Release in 2021, the average video duration noticeably increases,
+                    attributed to improved internet connectivity and consequently faster upload times.
+                    '''),
+                width=4
+            ),
         ]
     ),
 ])
@@ -385,40 +391,54 @@ app.layout = html.Div(
 # Callbacks
 @app.callback(
     [Output('video-length-bar', 'figure'),
-     Output('video-length-lineplot', 'figure')],
+     Output('video-length-lineplot', 'figure'),
+     Output('text-output', 'children')],
     [Input('data-dropdown', 'value')]
 )
+
+# Graphs for the Video Length Development 
 def update_graphs(selected_data):
     if selected_data == 'original_data':
         data_to_use = video_length_data
+        text_output = [html.B("The Original Data"), " refers to the unfiltered dataset obtained from the YouTube API through our request."]
     elif selected_data == 'filtered_data':
         data_to_use = filtered_video_length_data
+        text_output = [
+    html.Div([
+        html.B("The Filtered Data"), 
+        "has been processed using a function designed to exclude entries with non-Latin characters in their titles. ",
+        "This was done due to instances where video durations were inaccurately recorded. ",
+        "For instance, in 2016, within the 'People & Blogs' category, numerous Arabic-language series were present, which were unrelated to the category. ",
+        "(On YouTube, video creators can select the category, leading to potential distortions.) ",
+        "As a result of this filtering process, ",
+        html.B("16.68%"),
+        " of the entries were ",
+        html.B("removed"),
+        "."
+        ])
+    ]
 
     common_legend_title = 'Category'
-
-    bar_fig = px.bar(
-        data_to_use,
+    bar_data = data_to_use[data_to_use['Category Title'] != 'Film & Animation']
+    bar_fig = px.area(
+        bar_data,
         x='Year',
         y='Duration_minutes',
         color='Category Title',
-        barmode='group',
+        # barmode='group',
         labels={'Year': 'Year', 'Duration_minutes': 'Duration in Minutes'},
         hover_data={'Category Title': False, 'Duration_minutes': ':.2f', 'Year': False},
-        hover_name= 'Category Title'
+        hover_name= 'Category Title',
     )
-    bar_fig.update_traces(hovertemplate='Duration: %{y:.2f} min')
+    bar_fig.update_traces(hovertemplate='Duration: %{y:.2f} min'),
+    bar_fig.add_vline(x=2021, line_dash="dash", line_color="red", annotation_text="Shorts Release", annotation_font=dict(color="red")),
+    bar_fig.add_vline(x=2020, line_dash="dash", line_color="red", annotation_text="Corona Pandemic", annotation_position="top left", annotation_font=dict(color="red"))
 
     bar_fig.update_layout(
         plot_bgcolor='#e7e7e7',
         paper_bgcolor='#d1d1d1',
         legend_title=common_legend_title,
-        uniformtext_minsize=12,  # Set the minimum font size
-        uniformtext_mode='hide',  # Hide text when there's not enough space
-        bargap=0.1,  # Adjust the gap between bars
-        bargroupgap=0.1,  # Adjust the gap between groups of bars
-        uniformtext=dict(mode='hide', minsize=10),  # Set text size and hiding mode
-        xaxis=dict(showgrid=False),  # Hide the x-axis gridlines
-        yaxis=dict(showgrid=True),  # Hide the y-axis gridlines
+        height=550,
     )
 
     line_fig = px.line(
@@ -426,20 +446,24 @@ def update_graphs(selected_data):
         x='Year',
         y='Duration_minutes',
         color='Category Title',
-        markers=True,
         labels={'Year': 'Year', 'Duration_minutes': 'Duration in Minutes'},
         hover_data={'Category Title': False, 'Duration_minutes': ':.2f', 'Year': False},
-        hover_name= 'Category Title'
+        hover_name= 'Category Title',
+        title='Average Video Duration by Category',
+        # markers=True,
     )
-    line_fig.update_traces(hovertemplate='Duration: %{y:.2f} min')
+    line_fig.update_traces(hovertemplate='Duration: %{y:.2f} min'),
+    line_fig.add_vline(x=2021, line_dash="dash", line_color="red", annotation_text="Shorts Release", annotation_font=dict(color="red")),
+    line_fig.add_vline(x=2020, line_dash="dash", line_color="red", annotation_text="Corona Pandemic", annotation_position="top left", annotation_font=dict(color="red")),
 
     line_fig.update_layout(
         plot_bgcolor='#e7e7e7',
         paper_bgcolor='#d1d1d1',
-        legend_title=common_legend_title 
+        legend_title=common_legend_title,
+        height=550,
     )
 
-    return bar_fig, line_fig
+    return bar_fig, line_fig, text_output
 
 @app.callback(
     Output('pie-chart', 'figure'),
@@ -462,16 +486,23 @@ def update_pie_chart(selected_country, selected_date):
             'layout': {
                 'annotations': [{
                     'text': 'No data available for the selected date.',
-                    'x': 3,
-                    'y': 2.5,
+                    'x': 0.5,
+                    'y': 0.5,
+                    'xref': 'paper',
+                    'yref': 'paper',
                     'showarrow': False,
                     'font': {
                         'size': 25
                     }
                 }],
-                'showlegend': False
+                'showlegend': False,
+                'plot_bgcolor': '#d1d1d1',
+                'paper_bgcolor': '#d1d1d1',
+                'xaxis': {'visible': False},
+                'yaxis': {'visible': False}
             }
         }
+
     df_grouped = df_selected_date.groupby('Category Title')['Quantity'].sum().reset_index()
     pie = px.pie(df_grouped, values='Quantity', names='Category Title', hover_name='Category Title')
     pie.update_traces(hovertemplate='%{hovertext}')
