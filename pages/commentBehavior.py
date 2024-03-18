@@ -66,7 +66,6 @@ layout = html.Div([
     ])
 ])
 
-
 @callback(
     Output('comment-bar-chart', 'figure'),
     [Input('channel-dropdown', 'value'),
