@@ -1,8 +1,6 @@
 import os
 from datetime import datetime, timedelta
-
 import json
-
 import pandas as pd
 
 from geopy.geocoders import Nominatim
