@@ -14,9 +14,10 @@ import json
 import dash_bootstrap_components as dbc
 
 
-dash.register_page(__name__, name='Youtube Trends')
+dash.register_page(__name__, )
 
 geolocator = Nominatim(user_agent="country_locator")
+
 
 with open('data/europe.geojson', encoding='utf-8') as f:
     geojson_data = json.load(f)
@@ -97,7 +98,6 @@ layout = html.Div([
                 html.H2('Youtube Trends Analytics', style={'color': '#dd2b2b'}),
                 width={'size': 5, 'offset': 1},
             ),
-
         ]
     ),
     dbc.Row(dbc.Col(html.H5('''
