@@ -43,6 +43,7 @@ zipp = "==3.18.0"
 geojson = "*"
 dash-ag-grid = "*"
 dash-bootstrap-components = "*"
+geopy = "*"
 
 [dev-packages]
 
