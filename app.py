@@ -30,118 +30,119 @@ light_colors = {
  'accent': '#dd2b2b'
 },
 
-with open('custom.geo_small.json', encoding='utf-8') as f:
+geolocator = Nominatim(user_agent="country_locator")
+
+with open('data\\europe.geojson', encoding='utf-8') as f:
     geojson_data = json.load(f)
 
 video_length_data = pd.read_csv('VideoLengthData.csv')
 filtered_video_length_data = pd.read_csv('Filtered_VideoLengthData.csv')
 
-# video_length_bar = px.bar(
-#     video_length_data,
-#     x='Year',
-#     y='Duration_minutes',
-#     color='Category Title',
-#     barmode='group',
-#     labels={'Year': 'Year', 'Duration_minutes': 'Duration in Minutes'}
-# )
+data_folder = 'data\\Trends100vRegions'
 
-# video_length_lineplot = px.line(
-#     video_length_data,
-#     x='Year',
-#     y='Duration_minutes',
-#     color='Category Title',
-#     markers=True,
-#     labels={'Year': 'Year', 'Duration_minutes': 'Duration in Minutes'},
-#     hover_data={'Category Title': True, 'Duration_minutes': ':.2f'}
-# )
+eu_countries_iso2 = {
+    'Austria': 'AT',
+    'Australia':'AU',
+    'Belgium': 'BE',
+    'Brazil':'BR',
+    'Bulgaria': 'BG',
+    'Canada':'CA',
+    'Croatia': 'HR',
+    'Cyprus': 'CY',
+    'Czech Republic': 'CZ',
+    'Denmark': 'DK',
+    'Estonia': 'EE',
+    'Finland': 'FI',
+    'France': 'FR',
+    'Germany': 'DE',
+    'Greece': 'GR',
+    'Hungary': 'HU',
+    'India':'IN',
+    'Ireland': 'IE',
+    'Italy': 'IT',
+    'Japan':'JP',
+    'Latvia': 'LV',
+    'Lithuania': 'LT',
+    'Luxembourg': 'LU',
+    'Malta': 'MT',
+    'Netherlands': 'NL',
+    'Niger':'NG',
+    'Poland': 'PL',
+    'Portugal': 'PT',
+    'Romania': 'RO',
+    'Slovakia': 'SK',
+    'Slovenia': 'SI',
+    'Spain': 'ES',
+    'Sweden': 'SE',
+    'United Kingdom': 'GB',
+    'USA':'US',
+}
 
-world_map = px.choropleth_mapbox(
-    geojson=geojson_data,
-    # locations=df['location'],  # Add the appropriate location data from the DataFrame
-    featureidkey="properties.id",  # Adjust this according to your GeoJSON structure
-    # color=df['property_to_color'],  # Add the appropriate column from the DataFrame for color representation
-    mapbox_style="carto-positron",
-    zoom=3,  # Adjust the zoom level
-    center={"lat": 51, "lon": 9},  # Adjust the center accordingly
-    opacity=0.5
-)
+channels = [
+    'baldandbankrupt',
+    'BestEverFoodReviewShow',
+    'ColdFusion',
+    'HaraldBaldr',
+    'PracticalEngineeringChannel',
+    'RoCarsTV',
+    'strictlydumpling',
+    'tavarish',
+    'theonlyzanny',
+    'thespiffingbrit',
+    'TravelThirstyBlog',
+    'YesTheory'
+]
+
+def get_country_coordinates(country):
+    location = geolocator.geocode(country)
+    if location:
+        return location.latitude, location.longitude
+    else:
+        return None, None
+
+pie_data = pd.read_csv(f'{data_folder}/DE_category_distribution.csv')
+df_selected_date = pie_data[pie_data['Execution Date'] == '2024-03-15']
+selected_pie_data = df_selected_date.groupby('Category Title')['Quantity'].sum().reset_index()
+pie_first_data = px.pie(selected_pie_data, values='Quantity', names='Category Title',hover_data={'Category Title':False,'Quantity':True}, hover_name='Category Title')
+pie_first_data.update_traces(hovertemplate='Quantity')
+
 
 # ------------------------------------------------------------------------------
 # App layout
 # Layout of the home page
 home_layout = html.Div(
     children=[
-        dbc.Row([
-            dbc.Col(
-              html.Img(src='assets/logo.png'),
-                width={'size': 1, 'offset': 4}
-
-            ),
-            dbc.Col(
-                html.H1("Visualizing YouTube", style={'margin-top': '1vh', }),
-
-                width={'size': 3, 'offset': 1},
-            ),
-        ]),
+        html.H1("Welcome to the Home Page"),
         html.Div("Select a project to visualize:"),
-        dcc.Link("Project 1", href="/project-1"),
+        dcc.Link("Trends Category Distribution", href="/category-dist"),
         html.Br(),
-        dcc.Link("Project 1.2", href="/project-1.2"),
+        dcc.Link("Video Length Development", href="/video-length"),
+        html.Br(),
+        dcc.Link("Comment behavior", href="/comment-behavior"),
         html.Br(),
         dcc.Link("Project 2", href="/project-2"),
         html.Br(),
         dcc.Link("Project 3", href="/project-3"),
+        html.Br(),
     ]
 )
 
-# Layout for Project 1
-project_1_layout = html.Div(
-    className='container-fluid',
-    children=[
-        html.H1(children="Youtube Trends Analytics"),
-        html.Div(children='''
-            A interactive Worldmap.
-        '''),
-        html.Div(
-            className='row',
-            children=[
+# Layout for Daily Trends Analytics
+project_1_layout = html.Div([
+    dbc.Row(
+        [
+            dbc.Col(
+                html.H2('Youtube Trends Analytics', style={'color': '#dd2b2b'}),
+                width={'size': 5, 'offset': 1},
+            ),
+            dbc.Col(
                 html.Div(
-                    className='ten.columns',  # Verwenden Sie 'col-md-6', um die Hälfte der Seite einzunehmen
-                    children=[
-                        html.Div(
-                            style={'width': '50%', 'height': '100vh'},  
-                            children=[
-                                dcc.Graph(id='map-graph', figure=world_map)
-                            ]
-                        )
-                    ]
+                    [
+                        html.Br(),
+                        dcc.Link("Home", href="/"),
+                    ],
+                    style={'display': 'flex', 'justify-content': 'center', 'align-items': 'center'}
                 ),
-<<<<<<< HEAD
-                html.Div(
-                    className='col-md-6',  
-                    children=[
-                        html.Div(
-                            style={'width': '50%', 'height': '100vh'},
-                            children=[
-                                html.Div(children=[
-                                    'new stuff'
-                                ])
-                            ]
-                        )
-                    ]
-                )
-            ]
-        )
-    ]
-)
-project_1_2_layout = html.Div([
-    dbc.Row(dbc.Col(html.H2('Youtube Video Length Development'),
-                width={'size':5, 'offset': 1},
-                ),
-        ),
-    dbc.Row(dbc.Col(html.Div('''
-                        The development of the video duration over the past 10 years.
-=======
                 width={'size':1, 'offset':5},
                 className="bg-dark border",
                 style={'color': '#2e6999'}
@@ -228,7 +229,6 @@ project_1_2_layout = html.Div([
                         The following charts illustrate the average duration of videos across various categories over the period from 2013 to 2023 in the USA.
                         Each line or area represents a distinct category.
                         This analysis focuses on data from the United States, as it accounts for the highest traffic on the platform, providing a comprehensive overview.
->>>>>>> development
                     '''),
                 width={'size': 4, 'offset': 1}
                 ),
@@ -242,6 +242,7 @@ project_1_2_layout = html.Div([
                                 ],
                                 value='original_data'
                             ),
+                style={'color':'#262626'},
                 width={'size': 2, 'offset': 5, 'order': 0}
                 ),
             dbc.Col(
@@ -258,20 +259,12 @@ project_1_2_layout = html.Div([
     ),
     dbc.Row(
         [
-<<<<<<< HEAD
-            dbc.Col(dcc.Graph(id='video-length-bar'),
-                width={'size': 6, 'offset': 1}
-                ),
-            dbc.Col(
-                ),
-=======
             dbc.Col(dcc.Graph(id='video-length-lineplot'),
                 width={'size': 6, 'offset': 1}
             ),
             dbc.Col(html.H5(id='text-output'),
             width=4
             ),
->>>>>>> development
         ]
     ),
     dbc.Row(
@@ -298,41 +291,54 @@ project_1_2_layout = html.Div([
         ]
     ),
 ])
-# Layout für Project 1-2
-# project_1_2_layout = html.Div(
-#     className='container-fluid',
-#     children=[
-#         html.H1(children="Youtube Video Length Development"),
-#         html.Div(children='''
-#             The development of the video duration over the past 10 years.
-#         '''),
-#         html.Div(
-#             className='row',
-#             children=[
-#                 html.Div(
-#                     style={'width': '20%', 'height': '10vh'},
-#                     children=[
-#                         dcc.Dropdown(
-#                             id='data-dropdown',
-#                             options=[
-#                                 {'label': 'Original Data', 'value': 'original_data'},
-#                                 {'label': 'Filtered Data', 'value': 'filtered_data'},
-#                             ],
-#                             value='original_data'
-#                         )
-#                     ]
-#                 ),
-#                 html.Div(
-#                     style={'width': '70%', 'height': '100vh'},
-#                     children=[
-#                         dcc.Graph(id='video-length-bar'),
-#                         dcc.Graph(id='video-length-lineplot')
-#                     ]
-#                 )
-#             ]
-#         )
-#     ]
-# )
+
+# Layout for Comment behavior
+project_1_3_layout = html.Div([
+    dbc.Row(
+        [
+            dbc.Col(
+                html.H2('Youtube Comment behavior', style={'color': '#dd2b2b'}),
+                width={'size': 5, 'offset': 1},
+            ),
+            dbc.Col(
+                html.Div(
+                    [
+                        html.Br(),
+                        dcc.Link("Home", href="/"),
+                    ],
+                    style={'display': 'flex', 'justify-content': 'center', 'align-items': 'center'}
+                ),
+                width={'size':1, 'offset':5},
+                className="bg-dark border",
+                style={'color': '#2e6999'}
+            ),
+        ]
+    ),
+    dbc.Row([
+        dbc.Col(dcc.Dropdown(
+                    id='channel-dropdown',
+                    options=[{'label': channel, 'value': channel} for channel in channels],
+                    value=channels[0]
+                    ),
+                style={'color':'#262626'},
+                width={'size':2, 'offset':1}
+            ),
+        dbc.Col(dcc.Dropdown(
+                    id='value-dropdown',
+                    options=[
+                    {'label': 'Relative Probability', 'value': 'Relative Probability (%)'},
+                    {'label': 'Average per Video', 'value': 'Average per Video'}
+                    ],
+                    value='Relative Probability (%)'
+                ),
+                style={'color':'#262626'},
+                width={'size':2, 'offset':0}
+        )
+    ]),
+    dbc.Row([
+        dbc.Col(dcc.Graph(id='comment-bar-chart'), width={'size':10,'offset':1})
+    ])
+])
 
 # Layout for Project 2
 project_2_layout = html.Div(
@@ -356,10 +362,12 @@ project_3_layout = html.Div(
     [Input("url", "pathname")]
 )
 def display_page(pathname):
-    if pathname == "/project-1":
+    if pathname == "/category-dist":
         return project_1_layout
-    elif pathname == "/project-1.2":
+    elif pathname == "/video-length":
         return project_1_2_layout
+    elif pathname == "/comment-behavior":
+        return project_1_3_layout
     elif pathname == "/project-2":
         return project_2_layout
     elif pathname == "/project-3":
@@ -407,15 +415,10 @@ def update_graphs(selected_data):
         ])
     ]
 
-<<<<<<< HEAD
-    bar_fig = px.bar(
-        data_to_use,
-=======
     common_legend_title = 'Category'
     bar_data = data_to_use[data_to_use['Category Title'] != 'Film & Animation']
     bar_fig = px.area(
         bar_data,
->>>>>>> development
         x='Year',
         y='Duration_minutes',
         color='Category Title',
@@ -428,8 +431,6 @@ def update_graphs(selected_data):
     bar_fig.add_vline(x=2021, line_dash="dash", line_color="red", annotation_text="Shorts Release", annotation_font=dict(color="red")),
     bar_fig.add_vline(x=2020, line_dash="dash", line_color="red", annotation_text="Corona Pandemic", annotation_position="top left", annotation_font=dict(color="red"))
 
-<<<<<<< HEAD
-=======
     bar_fig.update_layout(
         plot_bgcolor='#e7e7e7',
         paper_bgcolor='#d1d1d1',
@@ -437,7 +438,6 @@ def update_graphs(selected_data):
         height=550,
     )
 
->>>>>>> development
     line_fig = px.line(
         data_to_use,
         x='Year',
@@ -454,13 +454,6 @@ def update_graphs(selected_data):
     line_fig.add_vline(x=2020, line_dash="dash", line_color="red", annotation_text="Corona Pandemic", annotation_position="top left", annotation_font=dict(color="red")),
 
     line_fig.update_layout(
-<<<<<<< HEAD
-    plot_bgcolor='#1f2630',
-    paper_bgcolor='#ededed',
-    )
-
-    return bar_fig, line_fig
-=======
         plot_bgcolor='#e7e7e7',
         paper_bgcolor='#d1d1d1',
         legend_title=common_legend_title,
@@ -576,7 +569,6 @@ def update_bar_chart(selected_channel, selected_value):
 # App starten
 if __name__ == '__main__':
     app.run_server(debug=True)
->>>>>>> development
 # ------------------------------------------------------------------------------
 # Starting the Dash app
 if __name__ == "__main__":
