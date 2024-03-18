@@ -136,12 +136,15 @@ project_1_2_layout = html.Div([
                                 {'label': 'Filtered Data', 'value': 'filtered_data'},
                                 ],
                                 value='original_data'
+
                             ),
                 width={'size': 2, 'offset': 5, 'order': 0}
                 ),
             dbc.Col(
                 ),
+
         ]
+
     ),
     dbc.Row(
         [
