@@ -258,7 +258,8 @@ project_1_2_layout = html.Div([
     ),
     dbc.Row(
         [
-            dbc.Col(dcc.Graph(id='video-length-bar'),
+            dbc.Col(dcc.Graph(id='video-length-bar', style={'border-radius': '20px'}),
+                
                 width={'size': 6, 'offset': 1}
                 ),
             dbc.Col(html.H5('''
