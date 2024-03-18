@@ -18,7 +18,7 @@ dash.register_page(__name__, name='Youtube Trends')
 
 geolocator = Nominatim(user_agent="country_locator")
 
-with open('data\\europe.geojson', encoding='utf-8') as f:
+with open('data\europe.geojson', encoding='utf-8') as f:
     geojson_data = json.load(f)
 
 data_folder = './data\\Trends100vRegions'
