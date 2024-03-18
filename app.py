@@ -94,6 +94,18 @@ channels = [
     'YesTheory'
 ]
 
+category_options = pd.read_csv('data/Categories.csv')
+
+file_list = os.listdir(data_folder)
+dfs = []
+
+for file_name in file_list:
+    if file_name.endswith('.csv'):
+        df = pd.read_csv(os.path.join(data_folder, file_name))
+        df['Country'] = file_name[:2]
+        dfs.append(df)
+weekly_df = pd.concat(dfs, ignore_index=True)
+
 def get_country_coordinates(country):
     location = geolocator.geocode(country)
     if location:
@@ -194,14 +206,22 @@ project_1_layout = html.Div([
         )
     ]),
     dbc.Row([
-        dbc.Col(html.H5('''
+        dbc.Col(html.H2('''
             
             '''),
-            width={'size':4, 'offset':1}
-        ),
-        dbc.Col(
-            width={'size':4, 'offset':1}
         )
+    ]),
+    dbc.Row([
+        dbc.Col(dcc.Dropdown(
+                id='category-dropdown',
+                options=[{'label': category, 'value': category} for category in category_options['Category Title']],
+                value=None,
+                placeholder="Select a category",
+            ),
+            style={'color':'#262626'},
+            width={'size':2, 'offset':1}
+        ),
+        dbc.Col(dcc.Graph(id='weekly-graph'), width=4)
     ])
 ])
 # Layout for Video Length Development
@@ -462,6 +482,32 @@ def update_graphs(selected_data):
     )
 
     return bar_fig, line_fig, text_output
+
+# Graph for weekly dev
+@app.callback(
+    Output('weekly-graph', 'figure'),
+    [Input('category-dropdown', 'value'),
+    Input('country-dropdown', 'value')]
+)
+
+def update_weeklygraph(selected_category, selected_country):
+    if selected_category and selected_country:
+        weekly_df['Execution Date'] = pd.to_datetime(weekly_df['Execution Date'])
+        filtered_df = weekly_df[(weekly_df['Category Title'] == selected_category) & 
+                                (weekly_df['Country'] == selected_country) & 
+                                (weekly_df['Execution Date'] >= weekly_df['Execution Date'].min()) & 
+                                (weekly_df['Execution Date'] <= weekly_df['Execution Date'].max())]
+        weekly_fig = px.bar(filtered_df, x='Execution Date', y='Quantity', color='Country', title=f'Data for {selected_category} in {selected_country}')
+        weekly_fig.update_traces(marker_color='#dd2b2b')
+        weekly_fig.update_xaxes(title_text='Date')
+        weekly_fig.update_yaxes(title_text='Distribution')
+        weekly_fig.update_layout(
+            plot_bgcolor='#e7e7e7',
+            paper_bgcolor='#d1d1d1',
+            showlegend=False)
+        return weekly_fig
+    else:
+        return {}
 
 @app.callback(
     Output('pie-chart', 'figure'),
