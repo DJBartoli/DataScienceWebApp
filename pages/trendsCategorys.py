@@ -21,7 +21,7 @@ geolocator = Nominatim(user_agent="country_locator")
 with open('data/europe.geojson', encoding='utf-8') as f:
     geojson_data = json.load(f)
 
-data_folder = './data\\Trends100vRegions'
+data_folder = 'data/Trends100vRegions'
 
 eu_countries_iso2 = {
     'Austria': 'AT',
