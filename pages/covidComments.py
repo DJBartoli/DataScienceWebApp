@@ -131,12 +131,6 @@ def update_graph(selected_year, selected_query):
                        color_discrete_map={'joy': '#7EBB22', 'sadness': '#AC44CC', 'fear': '#7D3C98',
                                            'anger': '#E63946', 'disgust': '#F1C40F'})
 
-    img_bytes = fig.to_image(format="png", scale=4)
-    img = Image(img_bytes)
-    if not os.path.exists("images"):
-        os.mkdir("images")
-        
-    fig.write_image("images/fig1.png")
 
     return fig
 
