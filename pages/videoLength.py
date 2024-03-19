@@ -62,12 +62,13 @@ layout = html.Div([
     dbc.Row(
         [
             dbc.Col(dcc.Graph(id='video-length-lineplot'),
-                    width={'size': 6, 'offset': 1}
+                    width={'size': 6, 'offset': 1},
+                    style={'padding': '5px', 'background-color': '#d1d1d1', 'border-radius': '10px', 'box-shadow': '0px 2px 5px #949494'},
                     ),
             dbc.Col(html.H5(id='text-output'),
                     width=4
                     ),
-        ]
+        ],
     ),
     dbc.Row(
         [
@@ -80,7 +81,8 @@ layout = html.Div([
     dbc.Row(
         [
             dbc.Col(dcc.Graph(id='video-length-bar'),
-                    width={'size': 6, 'offset': 1}
+                    width={'size': 6, 'offset': 1},
+                    style={'padding': '5px', 'background-color': '#d1d1d1', 'border-radius': '10px', 'box-shadow': '0px 2px 5px #949494'},
                     ),
             dbc.Col(html.H5('''
                     In the upper graph, it is evident how the average video duration significantly decreases in the 'Film & Animation' category,

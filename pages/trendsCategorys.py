@@ -136,19 +136,31 @@ layout = html.Div([
     dbc.Row([
         dbc.Col(
             dcc.Graph(id='pie-chart', figure=pie_first_data),
+            style={'padding': '5px', 'background-color': '#d1d1d1', 'border-radius': '10px', 'box-shadow': '0px 2px 5px #949494'},
             width={'size': 4, 'offset': 1}
         ),
         dbc.Col(
             dcc.Graph(id='map-graph'),
-            width={'size': 4, 'offset': 0}
+            style={'padding': '5px', 'background-color': '#d1d1d1', 'border-radius': '10px', 'box-shadow': '0px 2px 5px #949494'},
+            width={'size': 3, 'offset': 1},
         )
-    ]),
+    ],
+    className="g-0"),
     dbc.Row([
         dbc.Col(html.H2('''
 
             '''),
                 )
     ]),
+    dbc.Row([
+        dbc.Col(html.H5('''
+                Here, you can view the distribution of individual
+                 categories over a few days for the selected country above.
+                '''),
+                width={'size': 3, 'offset': 1}
+                )
+    ],
+    align="start",),
     dbc.Row([
         dbc.Col(dcc.Dropdown(
             id='category-dropdown',
@@ -159,16 +171,12 @@ layout = html.Div([
             style={'color': '#262626'},
             width={'size': 2, 'offset': 1}
         ),
-        dbc.Col(dcc.Graph(id='weekly-graph'), width=4)
+        # dbc.Col(dcc.Graph(id='weekly-graph'), width=4)
     ]),
     dbc.Row([
-        dbc.Col(html.H5('''
-                Here, you can view the distribution of individual
-                 categories over a few days for the selected country above.
-                '''),
-                width={'size': 2, 'offset': 1}
-                )
-    ])
+        dbc.Col(dcc.Graph(id='weekly-graph'), width={'size':4,'offset':1})
+    ],
+    ),
 ])
 
 @callback(
