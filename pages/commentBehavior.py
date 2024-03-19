@@ -128,7 +128,7 @@ layout = html.Div([
                 '''),
             width={'size': 5, 'offset': 1},)
     ],
-    style={'height':'100px'}
+    style={'height':'120px'}
     ),
     dbc.Row([
         dbc.Col(dcc.Dropdown(
@@ -174,6 +174,7 @@ def update_overall_line_chart(selected_value):
         x='Day',
         y=average_overall[selected_value],
         labels={'Day': 'Days After Video Release', selected_value: value_title},
+        color_discrete_sequence=['#dd2b2b']
     )
     overall_line_chart.update_layout(
         plot_bgcolor='#e7e7e7',
@@ -202,7 +203,8 @@ def update_bar_chart(selected_channel, selected_value):
         channel_data,
         x='Day',
         y=channel_data[selected_value],
-        labels={'Day': 'Days After Video Release', selected_value: value_title}
+        labels={'Day': 'Days After Video Release', selected_value: value_title},
+        color_discrete_sequence=['#dd2b2b']
     )
     comment_fig.update_layout(
         xaxis=dict(range=[0.5, 50]),
@@ -234,7 +236,7 @@ def update_selected_bar_chart(clickData, selected_channel, selected_value):
             y=selected_day_data[selected_value], 
             # title=f'Verteilung für Tag {selected_day}',
             #labels={'hour': 'H', 'value': 'Werte'},
-            color_discrete_sequence=['red']
+            color_discrete_sequence=['#dd2b2b']
         )
 
         selected_figure.update_layout(

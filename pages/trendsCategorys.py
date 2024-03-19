@@ -14,7 +14,7 @@ import json
 import dash_bootstrap_components as dbc
 
 
-dash.register_page(__name__, )
+dash.register_page(__name__, name='Trends')
 
 geolocator = Nominatim(user_agent="country_locator")
 
@@ -204,9 +204,9 @@ def update_weeklygraph(selected_category, selected_country):
                                 (weekly_df['Execution Date'] >= weekly_df['Execution Date'].min()) &
                                 (weekly_df['Execution Date'] <= weekly_df['Execution Date'].max())]
         weekly_fig = px.bar(filtered_df, x='Execution Date', y='Quantity', color='Country', title=f'Data for {selected_category} in {selected_country}')
-        weekly_fig.update_traces(marker_color='#dd2b2b')
+        weekly_fig.update_traces(marker_color='#dd2b2b', hovertemplate='%{y}')
         weekly_fig.update_xaxes(title_text='Date')
-        weekly_fig.update_yaxes(title_text='Distribution')
+        weekly_fig.update_yaxes(title_text='Quantity')
         weekly_fig.update_layout(
             plot_bgcolor='#e7e7e7',
             paper_bgcolor='#d1d1d1',
