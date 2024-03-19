@@ -44,6 +44,7 @@ geojson = "*"
 dash-ag-grid = "*"
 dash-bootstrap-components = "*"
 geopy = "*"
+matplotlib = "*"
 
 [dev-packages]
 ipykernel = "*"
