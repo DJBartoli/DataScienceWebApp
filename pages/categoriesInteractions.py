@@ -16,5 +16,5 @@ import dash_bootstrap_components as dbc
 dash.register_page(__name__,  name='Categories Interactions')
 
 layout = html.Div(
-    html.H1("Youtube Through the Years")
+    html.H1("Viewer interaction in different categories")
 )
