@@ -16,7 +16,7 @@ import dash_bootstrap_components as dbc
 
 dash.register_page(__name__,  name='Duration Interactions')
 
-df = pd.read_csv('data\duration\Markiplier_Formatted.csv')
+df = pd.read_csv('data/duration/Markiplier_Formatted.csv')
 
 avg_like = df.groupby('Category')['Like/View'].mean().reset_index()
 
