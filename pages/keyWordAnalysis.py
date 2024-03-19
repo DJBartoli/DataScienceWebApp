@@ -28,10 +28,17 @@ def create_image_dataframe():
         for year in range(2013, 2024):
             path = f'data/keyWordClouds/topicKeyWords/youtube_keywords_{topic}_{year}.png'
             new_row = pd.DataFrame({'topic': topic, 'year': str(year), 'path': path}, index=[i])
-            image_df = pd.concat([image_df, new_row], )
+            image_df = pd.concat([image_df, new_row])
             i += 1
-    return image_df
 
+    for year in range(2013, 2024):
+        path = f'data/keyWordClouds/yearlyKeyWords/youtube_keywords_{year}.png'
+        new_row = pd.DataFrame({'topic': 'all categories', 'year': str(year), 'path': path}, index=[i])
+
+        image_df = pd.concat([image_df, new_row], )
+        i += 1
+
+    return image_df
 
 topic_images = create_image_dataframe()
 
@@ -125,7 +132,12 @@ layout = html.Div([
      Input('year-slider', 'value')]
 )
 def update_wordcloud(topic, year):
-    path = f'data/keyWordClouds/topicKeyWords/youtube_keywords_{topic}_{year}.png'
+
+    if topic == 'all categories':
+        path = f'data/keyWordClouds/yearlyKeyWords/youtube_keywords_{year}.png'
+    else:
+        path = f'data/keyWordClouds/topicKeyWords/youtube_keywords_{topic}_{year}.png'
+
     img = plt.imread(path)
 
     fig = px.imshow(img)
@@ -134,6 +146,8 @@ def update_wordcloud(topic, year):
     fig.update_yaxes(showticklabels=False)
 
     return fig
+
+
 @callback(
     Output('year-slider', 'value'),
     [Input('slider-left', 'n_clicks'),
