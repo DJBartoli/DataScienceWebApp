@@ -18,6 +18,8 @@ dash.register_page(__name__,  name='Duration Interactions')
 
 df = pd.read_csv('data/duration/Markiplier_Formatted.csv')
 
+boxdf = pd.read_csv('data/duration/Boxplot_Data.csv')
+
 avg_like = df.groupby('Category')['Like/View'].mean().reset_index()
 
 avg_comment = df.groupby('Category')['Comment/View'].mean().reset_index()
