@@ -29,7 +29,7 @@ channels = [
     'YesTheory'
 ]
 
-directory_path = "data\\comments\\"
+directory_path = "data/comments/"
 
 dataframes = []
 
@@ -188,7 +188,7 @@ def update_overall_line_chart(selected_value):
      Input('value-dropdown', 'value')]
 )
 def update_bar_chart(selected_channel, selected_value):
-    data_path = f'data\\comments\\{selected_channel}/'
+    data_path = f'data/comments/{selected_channel}/'
     channel_data = pd.read_csv(f'{data_path}development.csv')
     # channel_data = channel_data[channel_data['Day'] <= 100]
 
@@ -221,7 +221,7 @@ def update_bar_chart(selected_channel, selected_value):
     Input('value-dropdown', 'value')]
 )
 def update_selected_bar_chart(clickData, selected_channel, selected_value):
-    data_path = f'data\\comments\\{selected_channel}/'
+    data_path = f'data/comments/{selected_channel}/'
     filepath = os.path.join(data_path,"development_daily.csv")
     df = pd.read_csv(filepath)
     df['Relative Probability (%)'] = df['Relative Probability']
