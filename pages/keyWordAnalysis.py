@@ -32,7 +32,7 @@ def create_image_dataframe():
             i += 1
 
     for year in range(2013, 2024):
-        path = f'data/keyWordClouds/yearlyKeyWords/youtube_keywords_{year}.png'
+        path = f'data/keyWordClouds/yearlyKeyWords/youtube_keywords_{year}.jpg'
         new_row = pd.DataFrame({'topic': 'all categories', 'year': str(year), 'path': path}, index=[i])
 
         image_df = pd.concat([image_df, new_row], )
@@ -134,9 +134,9 @@ layout = html.Div([
 def update_wordcloud(topic, year):
 
     if topic == 'all categories':
-        path = f'data/keyWordClouds/yearlyKeyWords/youtube_keywords_{year}.png'
+        path = f'data/keyWordClouds/yearlyKeyWords/youtube_keywords_{year}.jpg'
     else:
-        path = f'data/keyWordClouds/topicKeyWords/youtube_keywords_{topic}_{year}.png'
+        path = f'data/keyWordClouds/topicKeyWords/youtube_keywords_{topic}_{year}.jpg'
 
     img = plt.imread(path)
 
