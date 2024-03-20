@@ -33,11 +33,11 @@ fig = go.Figure(data=[
     go.Bar( name='Avegare Comments', x=catdf['Category'], y=catdf['Average Comments'], marker_color='#dd2b2b')
 ],)
 
-fig.update_layout(title_text='Average viewer interactions in different categories', barmode='stack',
+fig.update_layout(title_text='Average Viewer Interactions in Different Categories', barmode='stack',
             plot_bgcolor='#e7e7e7',
             paper_bgcolor='#d1d1d1')
 fig.update_xaxes(title='Category')
-fig.update_yaxes(title='Interactions per 1000 views')
+fig.update_yaxes(title='Interactions per 1000 Views')
 
 
 # Layout
@@ -46,7 +46,7 @@ layout = html.Div(
 
     dbc.Row([
         dbc.Col(
-            html.H2('Viewer interaction in different categories', style={'color': '#dd2b2b'}),
+            html.H2('Viewer Interaction in Different Categories', style={'color': '#dd2b2b'}),
                 width={'size': 5, 'offset': 1},
                 style={'height':'80px'},
         ),
@@ -66,7 +66,7 @@ layout = html.Div(
                 ),
             dbc.Col(html.H5('''
                         This barchart shows the average likes and comments in selected categories.
-                        To obtain this data, we selected a few channels per category and analyzed the video informtion for 1000 videos per category. 
+                        To obtain this data, we selected 4 to 5 channels per category and analyzed the video informtion for a total of 1000 videos per category. 
                         For better comparison, we selected channels that have similar characteristics for each category. All videos used for this chart are from english speaking channels that have  
                         more than one million subsribers. Additionally, we excluded YouTube Shorts from this statistic. Adding to that, we made sure that the length and views of the selected channels' videos
                         is comparible. Of course it is not possible to find 5000 videos that have the same ammount of views and playtime, but most videos used for this chart are in the same range of views 
@@ -114,7 +114,11 @@ layout = html.Div(
                 
                 ),
                 dbc.Col(html.H5('''
-                        TODO
+                        This barchart contains some additional information to the chart above. For every video, you can see the average views per video in the dataset, aswell as the average duration of a video.
+                        The data is supposed to give some more context to the selection of videos for this page. While collecting our data, we were 
+                        trying to get statistics from similar videos and channels for each category. These barcharts show that most of the videos are quite close to each other in terms of views and length, 
+                        with Comedy being an exception. Due to the fact that the average length for comedy videos is much shorter than for the other categories, it was not possible for us to find enough 
+                        videos that match our criterias.
                         '''))
             ]),
 
