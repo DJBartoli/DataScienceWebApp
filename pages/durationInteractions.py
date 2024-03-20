@@ -116,10 +116,14 @@ layout = html.Div(
             
     ),
     
+# Callback
+
 @callback(
     Output('duration-boxplot', 'figure'),
     [Input('duration-drop', 'value')]
 )
+
+# Callback Function
 
 def update_duration_box(selected_value):
 
