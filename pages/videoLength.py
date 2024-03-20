@@ -115,7 +115,7 @@ def update_graphs(selected_data):
         data_to_use = filtered_video_length_data
         text_output = [
             html.Div([
-                html.B("The Filtered Data"),
+                html.B("The Filtered Data "),
                 "has been processed using a function designed to exclude entries with non-Latin characters in their titles. ",
                 "This was done due to instances where video durations were inaccurately recorded. ",
                 "For instance, in 2016, within the 'People & Blogs' category, numerous Arabic-language series were present, which were unrelated to the category. ",
