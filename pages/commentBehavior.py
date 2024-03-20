@@ -176,7 +176,8 @@ def update_overall_line_chart(selected_value):
         x='Day',
         y=average_overall[selected_value],
         labels={'Day': 'Days After Video Release', selected_value: value_title},
-        color_discrete_sequence=['#dd2b2b']
+        color_discrete_sequence=['#dd2b2b'],
+        title='Average Comments on YouTube Videos'
     )
     overall_line_chart.update_layout(
         plot_bgcolor='#e7e7e7',
@@ -206,7 +207,9 @@ def update_bar_chart(selected_channel, selected_value):
         x='Day',
         y=channel_data[selected_value],
         labels={'Day': 'Days After Video Release', selected_value: value_title},
-        color_discrete_sequence=['#dd2b2b']
+        color_discrete_sequence=['#dd2b2b'],
+        title=f'Average Comments under Videos from {selected_channel}'
+        
     )
     comment_fig.update_layout(
         xaxis=dict(range=[0.5, 50]),
