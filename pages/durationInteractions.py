@@ -34,7 +34,7 @@ fig = go.Figure(data=[
 ])
 
 bar_titles = ['0-5', '5-10', '10-20', '20-30', '30-60', '60+']
-fig.update_layout(title_text='Average viewer interactions mesured by comments and likes', barmode='stack',
+fig.update_layout(title_text='Average viewer interactions measured by comments and likes', barmode='stack',
             plot_bgcolor='#e7e7e7',
             paper_bgcolor='#d1d1d1')
 fig.update_xaxes(title='Video length in minutes',tickvals=avg_like['Category'], ticktext=bar_titles)
@@ -107,7 +107,8 @@ layout = html.Div(
                 
                 ),
                 dbc.Col(html.H5('''
-                        Text
+                        These boxplots show how the interaction values are distributed in each video length category. In the dropdown menu, you can chose between the comment and the like plots.
+                        In these boxplots, you can see that there are many outliers, especially for shorter videos.
                         '''))
             ]),
             
