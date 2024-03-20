@@ -136,7 +136,7 @@ def update_graphs(selected_data):
         y='Duration_minutes',
         color='Category Title',
         # barmode='group',
-        labels={'Year': 'Year', 'Duration_minutes': 'Duration in Minutes'},
+        labels={'Year': 'Year', 'Duration_minutes': 'Average Duration'},
         hover_data={'Category Title': False, 'Duration_minutes': ':.2f', 'Year': False},
         hover_name='Category Title',
     )
@@ -152,6 +152,8 @@ def update_graphs(selected_data):
         legend_title=common_legend_title,
         height=550,
     )
+    bar_fig.update_yaxes(tickvals=[], ticktext=[])
+    
 
     line_fig = px.line(
         data_to_use,
