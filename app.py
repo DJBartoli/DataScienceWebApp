@@ -1,16 +1,5 @@
-import os
-from datetime import datetime, timedelta
-import json
-
-import pandas as pd
 import dash
 from dash import dcc, html
-import plotly.express as px
-
-from geopy.geocoders import Nominatim
-import dash_bootstrap_components as dbc
-from dash.dependencies import Input, Output
-import json
 import dash_bootstrap_components as dbc
 
 app = dash.Dash(__name__, use_pages=True)
@@ -19,20 +8,35 @@ server = app.server
 
 app.layout = html.Div(
     [
-        html.Div([
+        html.Header([
             dbc.NavbarSimple(
                 children=[
                     dbc.NavItem(dbc.NavLink(page['name'], href=page['path']))
-                    for page in dash.page_registry.values()
+                    for page in dash.page_registry.values() if page['name'] != 'Imprint'
                 ],
                 brand="Visualizing YouTube",
                 brand_href="#",
                 color="#dd2b2b",
                 dark=True,
+                fixed='Top'
             )
         ]),
         html.Hr(),
-        dash.page_container
+        dash.page_container,
+
+        html.Footer([
+            dbc.NavbarSimple(
+                children=[
+                    dbc.NavItem(dbc.NavLink('Imprint', href='/imprint')),
+                ],
+                color='#606060',
+                dark=True,
+                links_left=True,
+            )
+
+        ],
+            style={'margin-top': '20px', 'height': '50px'}
+        ),
     ]
 )
 

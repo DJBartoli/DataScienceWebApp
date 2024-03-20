@@ -10,7 +10,6 @@ from _plotly_utils.png import Image
 from dash import dcc, html, callback
 from dash.dependencies import Input, Output
 
-
 dash.register_page(__name__, name='Covid Comments')
 
 COVID_COMMENTS = pd.read_csv(r'data/covidComments/comments_with_emotions.csv')
@@ -26,8 +25,28 @@ layout = html.Div([
             dbc.Col(
                 children=[html.H2('Covid Comments', style={'color': '#dd2b2b'}),
                           html.H3(
-                              'How has the mood among the Youtube comments changed during the course of the covid19 pandemic?'),
+                              'How has the mood among the Youtube comments changed during the course of the COVID19 '
+                              'pandemic?'),
                           ],
+                width={'size': 6, 'offset': 3},
+
+            ),
+        ]
+    ),
+    dbc.Row(
+        [
+            dbc.Col(
+                children=[
+                    html.H5(
+                        '''To get a good source of comments on the COVID pandemic, we took ten different queries, 
+                        each covering a different aspect of the pandemic. This gave us over 19000 comments from 
+                        unique videos. We always took the top 40 comments, sorted by relevance (YouTube algorithm), 
+                        uploaded in the same year as the video. To classify the comments, we used the IBM Watson 
+                        Natural Language Understanding API because of the granularity of its classification. We 
+                        declared a comment's emotion as ambiguous if the probability of the most likely emotion was 
+                        close to a guess. Explore our results and browse through the different queries and years for 
+                        a detailed view. '''),
+                ],
                 width={'size': 6, 'offset': 3},
 
             ),
@@ -65,22 +84,12 @@ layout = html.Div([
         dbc.Col(
             children=[
 
-            ],
-            width={'size': 5, 'offset': 3},
-            style={'margin-top': '5px'},
-        ),
-
-    ]),
-    dbc.Row([
-        dbc.Col(
-            children=[
-
                 dcc.Graph(id='comment-histogram'),
 
             ],
             width={'size': 6, 'offset': 3},
-            style={'padding': '5px', 'background-color': 'white', 'border-radius': '10px',
-                   'box-shadow': '0px 2px 5px #949494'},
+            style={'padding': '5px', 'background-color': '#d1d1d1', 'border-radius': '10px',
+                   'box-shadow': '0px 2px 5px #949494', 'margin-top': '20px'},
         )
     ]),
     dbc.Row([
@@ -90,19 +99,35 @@ layout = html.Div([
                 dbc.Col(dcc.Graph(id='comment-pie'))
 
             ],
-            width={'size': 6, 'offset': 3},
-            style={'padding': '5px', 'margin-top': '20px', 'background-color': 'white', 'border-radius': '10px',
-                   'box-shadow': '0px 2px 5px #949494'},
+            width={'size': 4, 'offset': 3},
+            style={'padding': '5px', 'background-color': '#d1d1d1', 'border-radius': '10px',
+                   'box-shadow': '0px 2px 5px #949494', 'margin-top': '20px'},
+        ),
+        dbc.Col(
+            children=[
+                html.H5('''As you can see 'joy' and 'sadness' are the both dominating emotions in every case. The 
+                dominance of joy can be explained,because it is the only positive conotaded emotion. Another reason 
+                could be the sarcastic nature of comment threads, which can be difficult for the Ai to classify 
+                corectly, because sarcasm relies so much on context.''')
+            ],
+            width={'size': 2},
+            style={'margin-top': '20px'}
         )
     ]),
+
     dbc.Row([
+        dbc.Col(html.H5('You have to select "All Years", to view the development of the comments over '
+                        'the years'),
+                width={'size': 6, 'offset': 3},
+                style={'margin-top': '20px'}
+                ),
         dbc.Col(
             children=[
                 dbc.Col(dcc.Graph(id='emotion-over-time')),
             ],
 
             width={'size': 6, 'offset': 3},
-            style={'padding': '5px', 'margin-top': '20px', 'background-color': 'white', 'border-radius': '10px',
+            style={'padding': '5px', 'background-color': '#d1d1d1', 'border-radius': '10px',
                    'box-shadow': '0px 2px 5px #949494'},
         ),
 
@@ -130,7 +155,8 @@ def update_graph(selected_year, selected_query):
                        category_orders={'emotion': emotion_order},
                        color_discrete_map={'joy': '#7EBB22', 'sadness': '#AC44CC', 'fear': '#7D3C98',
                                            'anger': '#E63946', 'disgust': '#F1C40F'})
-
+    fig.update_layout(plot_bgcolor='#e7e7e7',
+                      paper_bgcolor='#d1d1d1', )
 
     return fig
 
@@ -156,7 +182,9 @@ def update_pie(selected_year, selected_query):
                  color=emotion_counts.index,
                  category_orders={'emotion': emotion_order},
                  color_discrete_map={'joy': '#7EBB22', 'sadness': '#AC44CC', 'fear': '#7D3C98',
-                                      'anger': '#E63946', 'disgust': '#F1C40F'})
+                                     'anger': '#E63946', 'disgust': '#F1C40F'})
+    fig.update_layout(plot_bgcolor='#e7e7e7',
+                      paper_bgcolor='#d1d1d1', )
 
     return fig
 
@@ -185,6 +213,11 @@ def update_line_plot(selected_year, selected_query):
                   labels={'year': 'Year', 'value': 'Relative Frequency', 'emotion': 'Emotion'},
                   category_orders={'emotion': emotion_order},
                   color_discrete_map={'joy': '#7EBB22', 'sadness': '#AC44CC', 'fear': '#7D3C98',
-                                      'anger': '#E63946', 'disgust': '#F1C40F'})
+                                      'anger': '#E63946', 'disgust': '#F1C40F'},)
+
+    fig.update_xaxes(tickvals=[2020, 2021, 2022], ticktext=['2020', '2021', '2022'])
+
+    fig.update_layout(plot_bgcolor='#e7e7e7',
+                      paper_bgcolor='#d1d1d1',)
 
     return fig
