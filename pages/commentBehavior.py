@@ -94,7 +94,9 @@ layout = html.Div([
                 {'label': 'Relative Probability', 'value': 'Relative Probability (%)'},
                 {'label': 'Average per Video', 'value': 'Average per Video'}
             ],
-            value='Relative Probability (%)'
+            value='Relative Probability (%)',
+            clearable=False,
+            searchable=False,
         ),
             style={'color': '#262626'},
             width={'size': 2, 'offset': 1})
@@ -134,7 +136,9 @@ layout = html.Div([
         dbc.Col(dcc.Dropdown(
             id='channel-dropdown',
             options=[{'label': channel, 'value': channel} for channel in channels],
-            value=channels[0]
+            value=channels[0],
+            clearable=False,
+            searchable=False,
         ),
             style={'color': '#262626'},
             width={'size': 2, 'offset': 1}
@@ -145,16 +149,14 @@ layout = html.Div([
     style={'height':'50px'}
     ),
     dbc.Row([
-        dbc.Col(dcc.Graph(id='comment-bar-chart'), width={'size': 10, 'offset': 1},
+        dbc.Col(dcc.Graph(id='comment-bar-chart'), width={'size': 5, 'offset': 1},
+        style={'padding': '5px', 'background-color': '#d1d1d1', 'border-radius': '10px', 'box-shadow': '0px 2px 5px #949494'},),
+        dbc.Col(dcc.Graph(id='selected-comment-bar-chart'), width={'size': 5, 'offset': 0},
         style={'padding': '5px', 'background-color': '#d1d1d1', 'border-radius': '10px', 'box-shadow': '0px 2px 5px #949494'},)
     ]),
     dbc.Row([
         dbc.Col(html.H5())
     ]),
-    dbc.Row([
-        dbc.Col(dcc.Graph(id='selected-comment-bar-chart'), width={'size': 10, 'offset': 1},
-        style={'padding': '5px', 'background-color': '#d1d1d1', 'border-radius': '10px', 'box-shadow': '0px 2px 5px #949494'},)
-    ])
 ])
 
 @callback(
@@ -228,23 +230,25 @@ def update_selected_bar_chart(clickData, selected_channel, selected_value):
 
     if clickData:
         selected_day = clickData['points'][0]['x']
-        selected_day_data = df[df['Day'] == selected_day]
-
-        selected_figure = px.bar(
-            selected_day_data, 
-            x='Hour', 
-            y=selected_day_data[selected_value], 
-            # title=f'Verteilung für Tag {selected_day}',
-            #labels={'hour': 'H', 'value': 'Werte'},
-            color_discrete_sequence=['#dd2b2b']
-        )
-
-        selected_figure.update_layout(
-            plot_bgcolor='#e7e7e7',
-            paper_bgcolor='#d1d1d1',
-        )
-
-        return selected_figure
+        selected_day = selected_day - 1
     else:
-        return {}
+        selected_day = df['Day'].iloc[0]
+    
+    selected_day_data = df[df['Day'] == selected_day]
+
+    selected_figure = px.bar(
+        selected_day_data, 
+        x='Hour', 
+        y=selected_day_data[selected_value], 
+        title=f'Comments for day {selected_day + 1}',
+        color_discrete_sequence=['#dd2b2b']
+    )
+
+    selected_figure.update_layout(
+        plot_bgcolor='#e7e7e7',
+        paper_bgcolor='#d1d1d1',
+    )
+
+    return selected_figure
+
 

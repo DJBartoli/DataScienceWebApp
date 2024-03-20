@@ -42,7 +42,9 @@ layout = html.Div([
                                      {'label': 'Original Data', 'value': 'original_data'},
                                      {'label': 'Filtered Data', 'value': 'filtered_data'},
                                  ],
-                                 value='original_data'
+                                 value='original_data',
+                                 clearable=False,
+                                 searchable=False,
                                  ),
                     style={'color': '#262626'},
                     width={'size': 2, 'offset': 5, 'order': 0}

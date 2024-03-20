@@ -117,7 +117,9 @@ layout = html.Div([
             dcc.Dropdown(
                 id='country-dropdown',
                 options=[{'label': country, 'value': iso2} for country, iso2 in eu_countries_iso2.items()],
-                value='DE'
+                value='DE',
+                clearable=False,
+                searchable=False,
             ),
             style={'color': '#262626'},
             width={'size': 2, 'offset': 1, 'order': 1}
@@ -168,8 +170,10 @@ layout = html.Div([
         dbc.Col(dcc.Dropdown(
             id='category-dropdown',
             options=[{'label': category, 'value': category} for category in category_options['Category Title']],
-            value=None,
-            placeholder="Select a category",
+            value='Music',
+            clearable=False,
+            searchable=False,
+            # placeholder="Select a category",
         ),
             style={'color': '#262626'},
             width={'size': 2, 'offset': 1}
@@ -184,7 +188,18 @@ layout = html.Div([
     dbc.Row([
         dbc.Col(dcc.Graph(id='weekly-graph'), width={'size':4,'offset':1},
             style={'padding': '5px', 'background-color': '#d1d1d1', 'border-radius': '10px', 'box-shadow': '0px 2px 5px #949494'},
-        )
+        ),
+        dbc.Col([html.H5('''
+                For several years now, the music industry has established that songs
+                and albums are released on the night of Thursday to Friday.
+                This is also shown by the trends over the week. On Friday the number of
+                music videos jumps up and then increases even further over the next few days as the
+                new music videos are watched there. The proportion then drops again by next Friday.
+                
+                '''),
+                html.Br(),
+                html.H5('Unfortunately, on the days where there are no values, the Youtube Api query failed.'),
+        ],width={'size':4})
     ],
     ),
 ])
