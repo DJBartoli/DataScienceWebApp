@@ -73,7 +73,7 @@ layout = html.Div([
                         html.A("Here", href="/durationinteractions")],
                         style={'text-align': 'left'}),
                         html.Br(),
-                        html.Li(['Question 7: How has the average video length developed over the last 10 years? ',
+                        html.Li(['How has the average video length developed over the last 10 years? ',
                         html.A("Here", href="/videolength")],
                         style={'text-align': 'left'}),
                     ])

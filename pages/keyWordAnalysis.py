@@ -48,9 +48,9 @@ layout = html.Div([
     dbc.Row(
         [
             dbc.Col(
-                children=[html.H2('YouTube through the years', style={'color': '#dd2b2b'}),
+                children=[html.H2('YouTube through the Years', style={'color': '#dd2b2b'}),
                           html.H3(
-                              'Discover the most watched videos according to the keywords. Choose the year an '
+                              'Discover the most watched videos according to the keywords. Choose the year and a '
                               'category of interest'),
                           ],
                 width={'size': 6, 'offset': 3},
