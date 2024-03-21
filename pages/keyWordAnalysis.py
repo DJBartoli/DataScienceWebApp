@@ -88,7 +88,7 @@ layout = html.Div([
                 ),
             ],
             width={'size': 6, 'offset': 3},
-            style={'color': '#121212'}
+            style={'color': '#121212', 'margin-top': '20px'}
         ),
     ]),
     dbc.Row([
@@ -200,8 +200,8 @@ def update_slider_value(left_clicks, right_clicks, current_value):
      Input('year-slider', 'value')]
 )
 def update_word_frequency_chart(topic, year):
-    if topic == 'All_categories':
-        path = f'data/keyWordClouds/yearlyFrequentWords/frequent_words_{year}'
+    if topic == 'all categories':
+        path = f'data/keyWordClouds/yearlyFrequentWords/frequent_words_{year}.csv'
     else:
         path = f'data/keyWordClouds/topicFrequentWords/frequent_words_{topic}_{year}'
 
