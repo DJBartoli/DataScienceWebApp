@@ -126,6 +126,7 @@ layout = html.Div([
             width={'size': 1, 'offset': 0},
             style={'display': 'flex', 'justify-content': 'center', 'align-items': 'center'}
         ),
+    ]),
     dbc.Row([
         dbc.Col(
             children=[
