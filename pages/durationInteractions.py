@@ -64,11 +64,11 @@ layout = html.Div(
                 style={'padding': '5px', 'background-color': '#d1d1d1', 'border-radius': '10px', 'box-shadow': '0px 2px 5px #949494'},
                 ),
             dbc.Col(html.H5('''
-                    Since viewer engagement can vary a lot between different channels, this graph focusses on a single YouTube channel. We are using the Channel "Markiplier", because there
-                    are a lots of videos with a great variety in length uploaded to the channel. Another factor that influenced our choice is the ammount of YouTube Shorts uploaded to the channel, 
-                    since in terms of length/iteraction ration, they are not comparible to regular videos on the platform. On "Markiplier"s channel, there are only 4 Shorts uploaded, so they don't have a noticeable 
-                    influence on our data, because the data used on this page contains a total of 5000 Videos. The Barchart shows a clear trend, especially for the average comment values. The shortest videos have 
-                    the highest ammount of comments and the longer the video gets, the lower ammount of comments per view gets. For the average like count it can also be said that it is the highest for the 
+                    Since viewer engagement can vary a lot between different channels, this graph focuses on a single YouTube channel. We are using the channel "Markiplier" because there
+                    are lots of videos with a great variety in length uploaded to the channel. Another factor that influenced our choice is the amount of YouTube Shorts uploaded to the channel, 
+                    since in terms of length and interaction ratio, they are not comparable to regular videos on the platform. On Markiplier's channel, there are only 4 Shorts uploaded, so they don't have a noticeable 
+                    influence on our data because the data used on this page contains a total of 5000 Videos. The Barchart shows a clear trend, especially for the average comment values. The shortest videos have 
+                    the highest amount of comments, and the longer the video gets, the lower amount of comments per view. For the average like count, it can also be said that it is the highest for the 
                     shortest video and the lowest for the longest video, but there is no clear trend for the categories in between.
                     ''' 
                             
@@ -111,11 +111,11 @@ layout = html.Div(
                 
                 ),
                 dbc.Col(html.H5('''
-                        These boxplots show how the interaction values are distributed in each video length category. In the dropdown menu, you can chose between the comment and the like plots.
+                        These boxplots show how the interaction values are distributed in each video length category. In the drop-down menu, you can choose between the comment and the like plots.
                         In these boxplots, you can see that there are many outliers, especially for shorter videos. To filter out extreme points, we removed all entries 
-                        in the dataset that are more than 3 times the standard deviation away from the mean. In total, 190 entries were filtered out. Since we already filtered out the outliers that we do not 
+                        in the dataset that were more than 3 times the standard deviation away from the mean. In total, 190 entries were filtered out. Since we already filtered out the outliers that we do not 
                         want to have in our visualization, we are using the linear algorithm for the computation of the boxplots. These boxplots show similar trends to the barchart above. You can see that the 
-                        ammount of comments consistently gets lower the longer the videos get, while there also is no clear trend for the likes.
+                        amount of comments consistently gets lower the longer the videos get, while there is also no clear trend for the likes.
                         '''))
             ]),
             

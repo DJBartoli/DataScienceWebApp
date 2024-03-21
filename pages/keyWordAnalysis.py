@@ -63,9 +63,9 @@ layout = html.Div([
             children=[
                 html.H5('''We thought it would be interesting to look at how the most popular videos on the platform 
                 have changed over the years. Our first approach was to analyze the top 300 videos per year and create 
-                a WordCloud representing the yearly results. However, it did not take long to realise that this was 
-                not the optimal approach. The results were very disappointing as there were no trends or interesting 
-                real world events that corresponded to the keywords shown. We came to the conclusion that it was much 
+                a WordCloud representing the yearly results. However, it did not take long to realize that this was 
+                not the optimal approach. The results were very disappointing, as there were no trends or interesting 
+                real-world events that corresponded to the keywords shown. We came to the conclusion that it was much 
                 better to separate the keywords not only by year but also by category. This made the results much 
                 more interesting and comprehensive. You can cycle through all the categories and look at the keywords 
                 for the year you have chosen. You might find something that brings back memories of the past YouTube 

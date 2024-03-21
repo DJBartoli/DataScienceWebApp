@@ -192,13 +192,13 @@ layout = html.Div([
         dbc.Col([html.H5('''
                 For several years now, the music industry has established that songs
                 and albums are released on the night of Thursday to Friday.
-                This is also shown by the trends over the week. On Friday the number of
+                This is also shown by the trends over the week. On Friday, the number of
                 music videos jumps up and then increases even further over the next few days as the
                 new music videos are watched there. The proportion then drops again by next Friday.
                 
                 '''),
                 html.Br(),
-                html.H5('Unfortunately, on the days where there are no values, the Youtube Api query failed.'),
+                html.H5('Unfortunately, on days where there are no values, the Youtube API query failed.'),
         ],width={'size':4})
     ],
     ),
