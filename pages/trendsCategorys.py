@@ -192,13 +192,13 @@ layout = html.Div([
         dbc.Col([html.H5('''
                 For several years now, the music industry has established that songs
                 and albums are released on the night of Thursday to Friday.
-                This is also shown by the trends over the week. On Friday the number of
+                This is also shown by the trends over the week. On Friday, the number of
                 music videos jumps up and then increases even further over the next few days as the
                 new music videos are watched there. The proportion then drops again by next Friday.
                 
                 '''),
                 html.Br(),
-                html.H5('Unfortunately, on the days where there are no values, the Youtube Api query failed.'),
+                html.H5('Unfortunately, on days where there are no values, the Youtube API query failed.'),
         ],width={'size':4})
     ],
     ),
@@ -269,7 +269,24 @@ def update_pie_chart(selected_country, selected_date):
         }
 
     df_grouped = df_selected_date.groupby('Category Title')['Quantity'].sum().reset_index()
-    pie = px.pie(df_grouped, values='Quantity', names='Category Title', hover_name='Category Title')
+    pie = px.pie(df_grouped, values='Quantity', names='Category Title', hover_name='Category Title',
+                color_discrete_map={
+                        'Film & Animation': '#1f77b4',
+                        'Autos & Vehicles': '#ff7f0e',
+                        'Music': '#2ca02c',
+                        'Pets & Animals': '#d62728',
+                        'Sports': '#9467bd',
+                        'Travel & Events': '#8c564b',
+                        'Gaming': '#e377c2',
+                        'People & Blogs': '#7f7f7f',
+                        'Comedy': '#bcbd22',
+                        'Entertainment': '#17becf',
+                        'News & Politics': '#aec7e8',
+                        'Howto & Style': '#ffbb78',
+                        'Education': '#98df8a',
+                        'Science & Technology': '#ff9896',
+                        'Nonprofits & Activism': '#c5b0d5'})
+                        
     pie.update_traces(hovertemplate='%{hovertext}')
     pie.update_layout(
         # showlegend=False,

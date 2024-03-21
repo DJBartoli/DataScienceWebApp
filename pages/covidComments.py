@@ -39,7 +39,7 @@ layout = html.Div([
                 children=[
                     html.H5(
                         '''To get a good source of comments on the COVID pandemic, we took ten different queries, 
-                        each covering a different aspect of the pandemic. This gave us over 19000 comments from 
+                        each covering a different aspect of the pandemic. This gave us over 19,000 comments on 
                         unique videos. We always took the top 40 comments, sorted by relevance (YouTube algorithm), 
                         uploaded in the same year as the video. To classify the comments, we used the IBM Watson 
                         Natural Language Understanding API because of the granularity of its classification. We 

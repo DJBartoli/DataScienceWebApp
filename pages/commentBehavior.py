@@ -108,9 +108,8 @@ layout = html.Div([
         style={'padding': '5px', 'background-color': '#d1d1d1', 'border-radius': '10px', 'box-shadow': '0px 2px 5px #949494'},
         ),
         dbc.Col(html.H5('''
-            In this graph you can clearly see that a very large proportion of comments are written
-            on the first day and only 1/5 are written on the second day.
-            After 10 days, less than 1% of comments are written. This shows how fast-moving videos on Youtube are.
+            In this graph, you can clearly see that a very large proportion of comments are written on the first day, and only 1/5 are written on the second day.
+            After 10 days, less than 1% of comments are written. This shows how fast-moving videos on YouTube are.
             '''),
             width=2
         )
@@ -124,7 +123,7 @@ layout = html.Div([
     ),
     dbc.Row([
         dbc.Col(html.H5('''
-                In this section you can take a closer look at what the comment behavior is like on the selected channels.
+                In this section, you can take a closer look at what the comment behavior is like on the selected channels.
                 To do this, simply select the channel in the drop-down menu. You can then click on the individual days to get a more detailed overview.
                 You also have the option to move “Days After Release” to get further away from the release date.
                 '''),

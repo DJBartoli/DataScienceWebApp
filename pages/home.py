@@ -18,18 +18,17 @@ dash.register_page(__name__, path='/')
 layout = html.Div([
     html.H1('Introducing the YouTube API', style ={'text-align': 'center','color': '#dd2b2b'}),
     dbc.Col(style={'height':'50px'}),
-    dbc.Col(html.H4('''
-            Lorem ipsum dolor sit amet, consetetur sadipscing elitr,
-            sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
-            sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
-            Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
-            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor
-            invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
-            At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
-            no sea takimata sanctus est Lorem ipsum dolor sit amet.
-            '''),
-        className='text-center',
-        width={'size':4,'offset':4}
+    dbc.Col([
+        html.H4([
+            '''The goal of our project was to analyze data from YouTube to get some insights on one of the world's most popular online video sharing platforms. 
+            Our main focus was on the site's development over the years. Due to the fact that there is no historical channel data available, 
+            most of our research questions are based on video data, such as comments or video length. For data collection, we used the ''',
+            html.A("YouTube Data API", href="https://developers.google.com/youtube/v3"),
+            '. This API allowed us to get all the necessary information about channels and videos on the platform.'
+        ])
+    ],
+    className='text-center', 
+    width={'size':4,'offset':4}
     ),
     dbc.Col(style={'height':'50px'}),
     dbc.Row(
