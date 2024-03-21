@@ -61,7 +61,9 @@ layout = html.Div([
                 options=[{'label': str(year), 'value': year} for year in YEARS],
                 value='All Years',
                 multi=False,
-                style={'color': '#121212'}
+                style={'color': '#121212'},
+                clearable=False,
+                searchable=False
             ),
         ], width={'size': 3, 'offset': 3},
             style={'color': '#dd2b2b'}
@@ -74,7 +76,9 @@ layout = html.Div([
                 options=[{'label': query, 'value': query} for query in QUERIES],
                 value='All Queries',
                 multi=False,
-                style={'color': '#121212'}
+                style={'color': '#121212'},
+                clearable=False,
+                searchable=False
             ),
         ], width={'size': 3},
             style={'color': '#dd2b2b'}
