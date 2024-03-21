@@ -11,7 +11,7 @@ layout = (
                 dbc.Col([
                     html.H2('Imprint'),
                     html.P('Responsible for all content:'),
-                    html.P('Dante Bartoli'),
+                    html.P('Anton Ach, Dante Bartoli, Konstantin Hamann'),
                     html.P('stu231800@uni-kiel.de'),
                     html.P('Preetzer Straße 37'),
                     html.P('24223 Schwentinental'),

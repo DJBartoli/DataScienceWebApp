@@ -40,6 +40,7 @@ def create_image_dataframe():
 
     return image_df
 
+
 topic_images = create_image_dataframe()
 
 marks = {str(year): str(year) for year in topic_images['year'].unique()}
@@ -49,13 +50,31 @@ layout = html.Div([
             dbc.Col(
                 children=[html.H2('YouTube through the years', style={'color': '#dd2b2b'}),
                           html.H3(
-                              'Discover the most watched videos according to the keywords. Choose the year an category of interest'),
+                              'Discover the most watched videos according to the keywords. Choose the year an '
+                              'category of interest'),
                           ],
                 width={'size': 6, 'offset': 3},
 
             ),
         ]
     ),
+    dbc.Row([
+        dbc.Col(
+            children=[
+                html.H5('''We thought it would be interesting to look at how the most popular videos on the platform 
+                have changed over the years. Our first approach was to analyze the top 300 videos per year and create 
+                a WordCloud representing the yearly results. However, it did not take long to realise that this was 
+                not the optimal approach. The results were very disappointing as there were no trends or interesting 
+                real world events that corresponded to the keywords shown. We came to the conclusion that it was much 
+                better to separate the keywords not only by year but also by category. This made the results much 
+                more interesting and comprehensive. You can cycle through all the categories and look at the keywords 
+                for the year you have chosen. You might find something that brings back memories of the past YouTube 
+                landscape. For capacity reasons, we looked at the top 200 videos in each category. You can still see 
+                the results of our initial approach.''' )
+            ],
+            width={'size': 6, 'offset': 3},
+        ),
+    ]),
     dbc.Row([
         dbc.Col(
             children=[
@@ -107,7 +126,6 @@ layout = html.Div([
             width={'size': 1, 'offset': 0},
             style={'display': 'flex', 'justify-content': 'center', 'align-items': 'center'}
         ),
-    ]),
     dbc.Row([
         dbc.Col(
             children=[
@@ -122,7 +140,20 @@ layout = html.Div([
     ],
 
     ),
+    dbc.Row([
+        dbc.Col(
+            children=[
 
+                dcc.Graph(id='keyword_frequency_chart'),
+
+            ],
+            width={'size': 6, 'offset': 3},
+            style={'padding': '5px', 'background-color': 'white', 'border-radius': '10px',
+                   'box-shadow': '0px 2px 5px #949494', 'margin-top': '20px'},
+        )
+    ],
+
+    ),
 ])
 
 
@@ -132,7 +163,6 @@ layout = html.Div([
      Input('year-slider', 'value')]
 )
 def update_wordcloud(topic, year):
-
     if topic == 'all categories':
         path = f'data/keyWordClouds/yearlyKeyWords/youtube_keywords_{year}.jpg'
     else:
@@ -161,3 +191,30 @@ def update_slider_value(left_clicks, right_clicks, current_value):
     elif 'slider-right' in changed_id:
         return min(current_value + step_size, 2023)
     return current_value
+
+
+@callback(
+    Output('keyword_frequency_chart', 'figure'),
+    [Input('category-dropdown', 'value'),
+     Input('year-slider', 'value')]
+)
+def update_word_frequency_chart(topic, year):
+    if topic == 'All_categories':
+        path = f'data/keyWordClouds/yearlyFrequentWords/frequent_words_{year}'
+    else:
+        path = f'data/keyWordClouds/topicFrequentWords/frequent_words_{topic}_{year}'
+
+    frequent_words = pd.read_csv(path)
+
+    frequent_words = frequent_words.nlargest(50, 'numbers')
+
+    fig = px.bar(x=frequent_words['numbers'], y=frequent_words['words'], color_discrete_sequence=['#dd2b2b'],
+                 orientation='h')
+    fig.update_layout(title='Word Frequency',
+                      xaxis_title='Frequency',
+                      yaxis_title='Word',
+                      font=dict(color='black'),  # Farbe der Texte im Diagramm
+                      plot_bgcolor='white',  # Hintergrundfarbe des Diagramms
+
+                      )
+    return fig
