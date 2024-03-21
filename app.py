@@ -15,7 +15,7 @@ app.layout = html.Div(
                     for page in dash.page_registry.values() if page['name'] != 'Imprint'
                 ],
                 brand="Visualizing YouTube",
-                brand_href="#",
+                brand_href="/",
                 color="#dd2b2b",
                 dark=True,
                 fixed='Top'
