@@ -89,10 +89,10 @@ If you have any problems or need help, you can contact us here: stu237116@mail.u
 ## Roadmap
 * The Daily Trend will be updated with the current data for a certain period of time
 
-## Contributors:
-*
-*
-*
+## Authors:
+* Anton Ach
+* Dante Bartoli
+* Konstantin Hamann
 
 
   
