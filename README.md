@@ -6,22 +6,22 @@ Visualizing YouTube is a web application built using Dash, a Python web framewor
 For more information on Dash, refer to the [Dash documentation](https://dash.plotly.com/).
 
 ## Installation
-1. **Packages Dependencies**: The required packages and their versions are listed in the `requirements.txt` file. To install these packages, run the following command:
-   ```bash
-   pip install -r requirements.txt
-   ```
-   This command will install all the packages necessary to run the application and their dependencies.
-
 **Optional Steps**: It is recommended to create a virtual environment for your project to isolate the package installation. You can use `pipenv` for managing dependencies and creating a virtual environment. If `pipenv`is not installed, you can install it using pip:
-   ```bash
-   pip install pipenv
-   ```
+```bash
+pip install pipenv
+```
    Once `pipenv`is installed, you can create a virtual environment, activate it, and install dependencies with the following commands:
-   ```bash
-   pipenv shell
-   pipenv install -r requirements
-   ```
-   This will create a virtual environment and install all the dependencies specified in the `requirements.txt` file.
+```bash
+pipenv shell
+pipenv install -r requirements
+```
+This will create a virtual environment and install all the dependencies specified in the `requirements.txt` file.
+
+1. **Packages Dependencies**: The required packages and their versions are listed in the `requirements.txt` file. To install these packages, run the following command:
+```bash
+pip install -r requirements.txt
+```
+   This command will install all the packages necessary to run the application and their dependencies.
 
 ## Usage
 To run the application, execute the `app.py` file:
@@ -84,7 +84,7 @@ Once the application is running, users can navigate through different pages to v
 * The `pages/` directory contains Python files corresponding to different pages of the web application, each focusing on specific aspects of YouTube data visualization.
 
 ## Support
-If you have any problems or need help, you can contact us here: stu237116@mail.uni-kiel.deIf you have any problems or need help, you can contact us here: stu237116@mail.uni-kiel.de
+If you have any problems or need help, you can contact us here: stu237116@mail.uni-kiel.de
 
 ## Roadmap
 * The Daily Trend will be updated with the current data for a certain period of time
