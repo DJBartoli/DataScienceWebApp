@@ -12,7 +12,7 @@ For more information on Dash, refer to the [Dash documentation](https://dash.plo
    ```
    This command will install all the packages necessary to run the application and their dependencies.
 
-   **Optional Steps**: It is recommended to create a virtual environment for your project to isolate the package installation. You can use `pipenv` for managing dependencies and creating a virtual environment. If `pipenv`is not installed, you can install it using pip:
+**Optional Steps**: It is recommended to create a virtual environment for your project to isolate the package installation. You can use `pipenv` for managing dependencies and creating a virtual environment. If `pipenv`is not installed, you can install it using pip:
    ```bash
    pip install pipenv
    ```
