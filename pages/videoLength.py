@@ -15,8 +15,8 @@ import dash_bootstrap_components as dbc
 
 dash.register_page(__name__,  name='Video Length')
 
-video_length_data = pd.read_csv('./VideoLengthData.csv')
-filtered_video_length_data = pd.read_csv('./Filtered_VideoLengthData.csv')
+video_length_data = pd.read_csv('./data/videoLength/VideoLengthData.csv')
+filtered_video_length_data = pd.read_csv('./data/videoLength/Filtered_VideoLengthData.csv')
 
 layout = html.Div([
     dbc.Row(
