@@ -1,19 +1,17 @@
 import os
 from datetime import datetime, timedelta
-import json
 
 import pandas as pd
 import dash
 from dash import dcc, html, callback
 import plotly.express as px
 
-from geopy.geocoders import Nominatim
 import dash_bootstrap_components as dbc
 from dash.dependencies import Input, Output
-import json
-import dash_bootstrap_components as dbc
+
 dash.register_page(__name__, name='Comment Behavior')
 
+# Define the list of YouTube channels for data retrieval
 channels = [
     'baldandbankrupt',
     'BestEverFoodReviewShow',
@@ -29,18 +27,21 @@ channels = [
     'YesTheory'
 ]
 
+# Define the directory path where the comment data is stored
 directory_path = "data/comments/"
 
+# List to hold DataFrames for each channel
 dataframes = []
 
+# Iterate through each channel to read and process its data
 for channel in channels:
     filepath = os.path.join(directory_path, channel, "development.csv")
     
-
+    # Check if the file exists
     if os.path.exists(filepath):
         df = pd.read_csv(filepath)
         
-
+        # Aggregate daily statistics
         daily_stats = df.groupby('Day').agg({
             'Average per Video': 'mean',
             'Relative Probability (%)': 'mean'
@@ -48,13 +49,15 @@ for channel in channels:
         daily_stats = daily_stats.reset_index()
         daily_stats['Channel'] = channel
         
-
+        # Append the DataFrame to the list
         dataframes.append(daily_stats)
     else:
-        print(f"Datei 'development.csv' für den Kanal '{channel}' nicht gefunden.")
+        print(f"File 'development.csv' for channel '{channel}' not found.")
 
+# Combine all DataFrames into one
 combined_df = pd.concat(dataframes)
 
+# Aggregate overall averages
 average_overall = combined_df.groupby('Day').agg({
     'Average per Video': 'mean',
     'Relative Probability (%)': 'mean'
@@ -66,6 +69,7 @@ average_overall = average_overall[average_overall['Day'] <= 30]
 #///////////////Layout//////////////////
 
 layout = html.Div([
+    # Header
     dbc.Row(
         [
             dbc.Col(
@@ -74,6 +78,7 @@ layout = html.Div([
             ),
         ]
     ),
+    # Description
     dbc.Row(
         [
             dbc.Col(
@@ -87,6 +92,7 @@ layout = html.Div([
         ],
         style={'height':'100px'}
     ),
+    # Dropdown for selecting value type
     dbc.Row([
         dbc.Col(dcc.Dropdown(
             id='value-dropdown',
@@ -103,6 +109,7 @@ layout = html.Div([
     ],
     style={'height':'50px'}
     ),
+    # Overall Line Chart
     dbc.Row([
         dbc.Col(dcc.Graph(id='overall-line-chart'), width={'size': 8, 'offset': 1},
         style={'padding': '5px', 'background-color': '#d1d1d1', 'border-radius': '10px', 'box-shadow': '0px 2px 5px #949494'},
@@ -114,6 +121,7 @@ layout = html.Div([
             width=2
         )
     ]),
+    # Separator
     dbc.Row([
         dbc.Col(html.Hr(style={'margin': '20px 0', 'border': 'none', 'border-top': '1px solid #ccc'}),
         width={'size':10, 'offset':1}
@@ -121,6 +129,7 @@ layout = html.Div([
     ],
     style={'height':'50px'},
     ),
+    # Channel Selection Description
     dbc.Row([
         dbc.Col(html.H5('''
                 In this section, you can take a closer look at what the comment behavior is like on the selected channels.
@@ -131,6 +140,7 @@ layout = html.Div([
     ],
     style={'height':'120px'}
     ),
+    # Channel Dropdown
     dbc.Row([
         dbc.Col(dcc.Dropdown(
             id='channel-dropdown',
@@ -147,6 +157,7 @@ layout = html.Div([
     ],
     style={'height':'50px'}
     ),
+    # Bar Chart for Channel Comments
     dbc.Row([
         dbc.Col(dcc.Graph(id='comment-bar-chart'), width={'size': 5, 'offset': 1},
         style={'padding': '5px', 'background-color': '#d1d1d1', 'border-radius': '10px', 'box-shadow': '0px 2px 5px #949494'},),
@@ -158,6 +169,10 @@ layout = html.Div([
     ]),
 ])
 
+
+# ///////////////Callbacks//////////////////
+
+# Callback to update overall line chart
 @callback(
     Output('overall-line-chart', 'figure'),
     [Input('value-dropdown', 'value')]
@@ -184,6 +199,7 @@ def update_overall_line_chart(selected_value):
     )
     return overall_line_chart
 
+# Callback to update the bar chart for a selected channel and value type
 @callback(
     Output('comment-bar-chart', 'figure'),
     [Input('channel-dropdown', 'value'),
@@ -218,6 +234,7 @@ def update_bar_chart(selected_channel, selected_value):
 
     return comment_fig
 
+# Callback to update the selected comment bar chart based on user clicks
 @callback(
     Output('selected-comment-bar-chart', 'figure'),
     [Input('comment-bar-chart', 'clickData'),
