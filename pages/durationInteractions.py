@@ -16,6 +16,8 @@ import dash_bootstrap_components as dbc
 
 dash.register_page(__name__,  name='Duration Interactions')
 
+# Loading and formatting CSVs needed for this page.
+
 df = pd.read_csv('data/duration/Markiplier_Formatted.csv')
 
 boxdf = pd.read_csv('data/duration/Boxplot_Data.csv')
@@ -24,7 +26,9 @@ avg_like = df.groupby('Category')['Like/View'].mean().reset_index()
 
 avg_comment = df.groupby('Category')['Comment/View'].mean().reset_index()
 
-# Barchart
+# Creating the first Barchart.
+
+# Manually changing titles for the bars.
 
 bar_titles = ['0-5', '5-10', '10-20', '20-30', '30-60', '60+']
 
@@ -43,13 +47,19 @@ fig.update_yaxes(title='Interactions per 1000 Views')
 # Layout
 
 layout = html.Div(
+    
     dbc.Row(
+
         [
+            # Title for this page.
+
             dbc.Col(
                 html.H2('Viewer Interaction based on Video Length', style={'color': '#dd2b2b'}),
                 width={'size': 5, 'offset': 1},
                 style={'height':'80px'},
             ),
+
+            # Short site description.
 
             dbc.Row(dbc.Col(
                 html.H5('The charts on this page show the correlation between video length and viewer engagement for the channel "Markiplier".', ),
@@ -57,12 +67,17 @@ layout = html.Div(
                 style={'height':'80px'},
             )),
 
+            # Displaying the first barchart.
+
             dbc.Row([
                 dbc.Col(dcc.Graph(
                 id='duration-bar', figure=fig),
                 width={'size': 7, 'offset': 1},
                 style={'padding': '5px', 'background-color': '#d1d1d1', 'border-radius': '10px', 'box-shadow': '0px 2px 5px #949494'},
                 ),
+
+            # Text next to the figure.
+
             dbc.Col(html.H5('''
                     Since viewer engagement can vary a lot between different channels, this graph focuses on a single YouTube channel. We are using the channel "Markiplier" because there
                     are lots of videos with a great variety in length uploaded to the channel. Another factor that influenced our choice is the amount of YouTube Shorts uploaded to the channel, 
@@ -74,19 +89,29 @@ layout = html.Div(
                             
                             ))
             ]),
+
+            # Seperation line between visualizations.
+            
             dbc.Row([
                 dbc.Col(html.Hr(style={'margin': '20px 0', 'border': 'none', 'border-top': '1px solid #ccc'}),
                 width={'size':10, 'offset':1}
                         )
             ],
+
             style={'height':'50px'},
+
             ),
+
+            # Title for the second figure.
+            
             dbc.Col(
                 html.H2('Data displayed as a Boxplot', style={'color': '#dd2b2b'}),
                 width={'size': 5, 'offset': 1},
                 style={'height':'70px'}
             ),
 
+            # Inserting the dropdown menu to change between boxplots.
+            
             dbc.Row(
                 dbc.Col(dcc.Dropdown(
                 id='duration-drop',
@@ -101,8 +126,13 @@ layout = html.Div(
                         width={'size': 2, 'offset': 1} ),
 
             ),
+
+            # Inserting an empty row to create a gap between dropdown menu and boxplots.
+            
             dbc.Row(dbc.Row(html.H5(),style={'height':'20px'})),
 
+            # Inserting the boxplots.
+            
             dbc.Row([
                 dbc.Col(dcc.Graph(
                 id='duration-boxplot',),
@@ -110,6 +140,9 @@ layout = html.Div(
                 style={'padding': '5px', 'background-color': '#d1d1d1', 'border-radius': '10px', 'box-shadow': '0px 2px 5px #949494'},
                 
                 ),
+
+                # Text next to the boxplots.
+                
                 dbc.Col(html.H5('''
                         These boxplots show how the interaction values are distributed in each video length category. In the drop-down menu, you can choose between the comment and the like plots.
                         In these boxplots, you can see that there are many outliers, especially for shorter videos. To filter out extreme points, we removed all entries 
@@ -123,19 +156,20 @@ layout = html.Div(
             
     ),
     
-# Callback
+# Callback to receive input from dropdown menu and change plots.
 
 @callback(
     Output('duration-boxplot', 'figure'),
     [Input('duration-drop', 'value')]
 )
 
-# Callback Function
+# Callback Function.
+
+# Function returns different boxplots for 'Comments' or 'Likes'.
 
 def update_duration_box(selected_value):
 
     if selected_value == 'Comments':
-
 
         trace = go.Box(x=boxdf['Length'], y=boxdf['Comment/View'], marker_color='#dd2b2b', name='Boxplot')
 
