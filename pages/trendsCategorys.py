@@ -10,8 +10,6 @@ import plotly.express as px
 from geopy.geocoders import Nominatim
 import dash_bootstrap_components as dbc
 from dash.dependencies import Input, Output
-import json
-import dash_bootstrap_components as dbc
 
 # Register the page with the specified name
 dash.register_page(__name__, name='Trends')
@@ -95,7 +93,7 @@ pie_first_data = px.pie(selected_pie_data, values='Quantity', names='Category Ti
 pie_first_data.update_traces(hovertemplate='Quantity')
 
 
-#///////////////Layout//////////////////
+# ///////////////Layout//////////////////
 
 layout = html.Div([
     # Header

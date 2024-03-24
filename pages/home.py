@@ -1,19 +1,13 @@
-import os
-from datetime import datetime, timedelta
-import json
-
-import pandas as pd
 import dash
 from dash import dcc, html
-import plotly.express as px
 
-from geopy.geocoders import Nominatim
 import dash_bootstrap_components as dbc
 from dash.dependencies import Input, Output
-import json
-import dash_bootstrap_components as dbc
 
 dash.register_page(__name__, path='/')
+
+
+# ///////////////Layout//////////////////
 
 layout = html.Div([
     html.H1('Introducing the YouTube API', style ={'text-align': 'center','color': '#dd2b2b'}),
@@ -38,6 +32,7 @@ layout = html.Div([
                 )
         ]
     ),
+    # Panels for topics and research questions
     dbc.Row(dbc.Col(html.H1('Topics with Research Questions'),className='text-center align-self-end', style={'color': '#dd2b2b'})),
     dbc.Row(style={'height':'50px'}),
     dbc.Row(
