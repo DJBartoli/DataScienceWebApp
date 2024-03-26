@@ -7,16 +7,20 @@ import dash_bootstrap_components as dbc
 from dash import dcc, html, callback
 from dash.dependencies import Input, Output
 
+# register page
 dash.register_page(__name__, name='Covid Comments')
 
+# read in comment data
 COVID_COMMENTS = pd.read_csv(r'data/covidComments/comments_with_emotions.csv')
 YEARS = COVID_COMMENTS['year'].unique().tolist()
 YEARS.append('All Years')
-
 QUERIES = COVID_COMMENTS['query'].unique().tolist()
 QUERIES.append('All Queries')
 
+# define layout
 layout = html.Div([
+
+    # headline
     dbc.Row(
         [
             dbc.Col(
@@ -30,6 +34,8 @@ layout = html.Div([
             ),
         ]
     ),
+
+    # text
     dbc.Row(
         [
             dbc.Col(
@@ -49,6 +55,7 @@ layout = html.Div([
             ),
         ]
     ),
+    # dropdown menus
     dbc.Row([
         dbc.Col([
 
@@ -81,6 +88,8 @@ layout = html.Div([
             style={'color': '#dd2b2b'}
         ),
     ]),
+
+    # emotion histogram
     dbc.Row([
         dbc.Col(
             children=[
@@ -93,6 +102,8 @@ layout = html.Div([
                    'box-shadow': '0px 2px 5px #949494', 'margin-top': '20px'},
         )
     ]),
+
+    # pie chart
     dbc.Row([
         dbc.Col(
             children=[
@@ -116,6 +127,7 @@ layout = html.Div([
         )
     ]),
 
+    # line plot over all years
     dbc.Row([
         dbc.Col(html.H5('You have to select "All Years", to view the development of the comments over '
                         'the years'),
@@ -137,12 +149,23 @@ layout = html.Div([
 ])
 
 
+# ///////////////////Callbacks////////////////////////////
 @callback(
     Output('comment-histogram', 'figure'),
     [Input('year-dropdown', 'value'),
      Input('query-dropdown', 'value')]
 )
 def update_graph(selected_year, selected_query):
+    """
+       Update the emotion distribution graph based on the selected year and query.
+
+       :param selected_year: The selected year for filtering comments ('All Years' or a specific year).
+       :type selected_year: str
+       :param selected_query: The selected query for filtering comments ('All Queries' or a specific query).
+       :type selected_query: str
+       :return: Plotly figure object representing the emotion distribution graph.
+       :rtype: plotly.graph_objs._figure.Figure
+    """
     filtered_df = COVID_COMMENTS.copy()
     if selected_year != 'All Years':
         filtered_df = filtered_df[filtered_df['year'] == selected_year]
@@ -168,6 +191,16 @@ def update_graph(selected_year, selected_query):
      Input('query-dropdown', 'value')]
 )
 def update_pie(selected_year, selected_query):
+    """
+        Update the relative emotion distribution pie chart based on the selected year and query.
+
+        :param selected_year: The selected year for filtering comments ('All Years' or a specific year).
+        :type selected_year: str
+        :param selected_query: The selected query for filtering comments ('All Queries' or a specific query).
+        :type selected_query: str
+        :return: Plotly figure object representing the relative emotion distribution pie chart.
+        :rtype: plotly.graph_objs._figure.Figure
+    """
     filtered_df = COVID_COMMENTS.copy()
     if selected_year != 'All Years':
         filtered_df = filtered_df[filtered_df['year'] == selected_year]
@@ -196,6 +229,16 @@ def update_pie(selected_year, selected_query):
      Input('query-dropdown', 'value')]
 )
 def update_line_plot(selected_year, selected_query):
+    """
+       Update the relative emotion distribution over time line plot based on the selected year and query.
+
+       :param selected_year: The selected year for filtering comments ('All Years' or a specific year).
+       :type selected_year: str
+       :param selected_query: The selected query for filtering comments ('All Queries' or a specific query).
+       :type selected_query: str
+       :return: Plotly figure object representing the relative emotion distribution over time line plot.
+       :rtype: plotly.graph_objs._figure.Figure
+    """
     if selected_year != 'All Years':
         return px.line()  # Return empty plot if a specific year is selected
 
@@ -214,11 +257,11 @@ def update_line_plot(selected_year, selected_query):
                   labels={'year': 'Year', 'value': 'Relative Frequency', 'emotion': 'Emotion'},
                   category_orders={'emotion': emotion_order},
                   color_discrete_map={'joy': '#7EBB22', 'sadness': '#AC44CC', 'fear': '#7D3C98',
-                                      'anger': '#E63946', 'disgust': '#F1C40F'},)
+                                      'anger': '#E63946', 'disgust': '#F1C40F'}, )
 
     fig.update_xaxes(tickvals=[2020, 2021, 2022], ticktext=['2020', '2021', '2022'])
 
     fig.update_layout(plot_bgcolor='#e7e7e7',
-                      paper_bgcolor='#d1d1d1',)
+                      paper_bgcolor='#d1d1d1', )
 
     return fig

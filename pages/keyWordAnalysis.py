@@ -8,8 +8,10 @@ import plotly.express as px
 from dash import dcc, html, callback
 from dash.dependencies import Input, Output, State
 
-
+# register page
 dash.register_page(__name__, name='Keyword Analysis')
+
+# specify topics
 TOPICS = ['sports', 'gaming', 'lifestyle', 'politics', 'society', 'knowledge']
 step_size = 1
 
@@ -21,6 +23,8 @@ def create_image_dataframe():
     """
     image_df = pd.DataFrame()
     i = 0
+
+    # define topic specific paths and save them to a dataframe.
     for topic in TOPICS:
         for year in range(2013, 2024):
             path = f'data/keyWordClouds/topicKeyWords/youtube_keywords_{topic}_{year}.png'
@@ -28,6 +32,7 @@ def create_image_dataframe():
             image_df = pd.concat([image_df, new_row])
             i += 1
 
+    # define overall categories paths and save them to a dataframe.
     for year in range(2013, 2024):
         path = f'data/keyWordClouds/yearlyKeyWords/youtube_keywords_{year}.jpg'
         new_row = pd.DataFrame({'topic': 'all categories', 'year': str(year), 'path': path}, index=[i])
@@ -40,8 +45,12 @@ def create_image_dataframe():
 
 topic_images = create_image_dataframe()
 
+# define marks for plot
 marks = {str(year): str(year) for year in topic_images['year'].unique()}
+
 layout = html.Div([
+
+    # headline
     dbc.Row(
         [
             dbc.Col(
@@ -55,6 +64,8 @@ layout = html.Div([
             ),
         ]
     ),
+
+    # text paragraph
     dbc.Row([
         dbc.Col(
             children=[
@@ -67,11 +78,12 @@ layout = html.Div([
                 more interesting and comprehensive. You can cycle through all the categories and look at the keywords 
                 for the year you have chosen. You might find something that brings back memories of the past YouTube 
                 landscape. For capacity reasons, we looked at the top 200 videos in each category. You can still see 
-                the results of our initial approach.''' )
+                the results of our initial approach.''')
             ],
             width={'size': 6, 'offset': 3},
         ),
     ]),
+    # dropdown menu for category selection.
     dbc.Row([
         dbc.Col(
             children=[
@@ -88,6 +100,8 @@ layout = html.Div([
             style={'color': '#121212', 'margin-top': '20px'}
         ),
     ]),
+
+    # slider to choose the year.
     dbc.Row([
         dbc.Col(
             children=[
@@ -109,6 +123,8 @@ layout = html.Div([
             width={'size': 5, 'offset': 3},
             style={'margin-top': '5px'},
         ),
+
+        # buttons to clic through the years.
         dbc.Col(
             children=[
                 html.Button('◄', id='slider-left', n_clicks=0,
@@ -124,6 +140,8 @@ layout = html.Div([
             style={'display': 'flex', 'justify-content': 'center', 'align-items': 'center'}
         ),
     ]),
+
+    # the wordcloud plot
     dbc.Row([
         dbc.Col(
             children=[
@@ -138,6 +156,7 @@ layout = html.Div([
     ],
 
     ),
+    # word frequency chart
     dbc.Row([
         dbc.Col(
             children=[
@@ -161,6 +180,16 @@ layout = html.Div([
      Input('year-slider', 'value')]
 )
 def update_wordcloud(topic, year):
+    """
+        Update the word cloud image based on the selected topic and year.
+
+        :param topic: The selected topic for the word cloud ('all categories' or a specific topic).
+        :type topic: str
+        :param year: The selected year for the word cloud.
+        :type year: int
+        :return: Plotly figure object representing the word cloud image.
+        :rtype: plotly.graph_objs._figure.Figure
+        """
     if topic == 'all categories':
         path = f'data/keyWordClouds/yearlyKeyWords/youtube_keywords_{year}.jpg'
     else:
@@ -183,6 +212,18 @@ def update_wordcloud(topic, year):
     [State('year-slider', 'value')]
 )
 def update_slider_value(left_clicks, right_clicks, current_value):
+    """
+        Update the value of the slider based on left or right clicks.
+
+        :param left_clicks: Number of left clicks on the slider.
+        :type left_clicks: int
+        :param right_clicks: Number of right clicks on the slider.
+        :type right_clicks: int
+        :param current_value: The current value of the slider.
+        :type current_value: int
+        :return: The updated value of the slider.
+        :rtype: int
+        """
     changed_id = [p['prop_id'] for p in dash.callback_context.triggered][0]
     if 'slider-left' in changed_id:
         return max(current_value - step_size, 2013)
@@ -197,6 +238,16 @@ def update_slider_value(left_clicks, right_clicks, current_value):
      Input('year-slider', 'value')]
 )
 def update_word_frequency_chart(topic, year):
+    """
+        Update the word frequency chart based on the selected topic and year.
+
+        :param topic: The selected topic for the word frequency chart ('all categories' or a specific topic).
+        :type topic: str
+        :param year: The selected year for the word frequency chart.
+        :type year: int
+        :return: Plotly figure object representing the word frequency chart.
+        :rtype: plotly.graph_objs._figure.Figure
+        """
     if topic == 'all categories':
         path = f'data/keyWordClouds/yearlyFrequentWords/frequent_words_{year}.csv'
     else:
