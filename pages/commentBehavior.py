@@ -1,22 +1,12 @@
 import os
-<<<<<<< HEAD
-=======
-from datetime import datetime, timedelta
-
->>>>>>> 4c2d15e5042af45d5db0b55cb337af31faf14a7b
 import pandas as pd
 
 import dash
 import dash_bootstrap_components as dbc
 import plotly.express as px
 
-<<<<<<< HEAD
 from dash.dependencies import Input, Output
 from dash import dcc, html, callback
-=======
-import dash_bootstrap_components as dbc
-from dash.dependencies import Input, Output
->>>>>>> 4c2d15e5042af45d5db0b55cb337af31faf14a7b
 
 dash.register_page(__name__, name='Comment Behavior')
 
@@ -45,31 +35,21 @@ dataframes = []
 # Iterate through each channel to read and process its data
 for channel in channels:
     filepath = os.path.join(directory_path, channel, "development.csv")
-<<<<<<< HEAD
 
-    if os.path.exists(filepath):
-        df = pd.read_csv(filepath)
 
-=======
-    
     # Check if the file exists
     if os.path.exists(filepath):
         df = pd.read_csv(filepath)
         
         # Aggregate daily statistics
->>>>>>> 4c2d15e5042af45d5db0b55cb337af31faf14a7b
         daily_stats = df.groupby('Day').agg({
             'Average per Video': 'mean',
             'Relative Probability (%)': 'mean'
         })
         daily_stats = daily_stats.reset_index()
         daily_stats['Channel'] = channel
-<<<<<<< HEAD
-
-=======
         
         # Append the DataFrame to the list
->>>>>>> 4c2d15e5042af45d5db0b55cb337af31faf14a7b
         dataframes.append(daily_stats)
     else:
         print(f"File 'development.csv' for channel '{channel}' not found.")
@@ -192,12 +172,8 @@ layout = html.Div([
 ])
 
 
-<<<<<<< HEAD
-=======
 # ///////////////Callbacks//////////////////
-
 # Callback to update overall line chart
->>>>>>> 4c2d15e5042af45d5db0b55cb337af31faf14a7b
 @callback(
     Output('overall-line-chart', 'figure'),
     [Input('value-dropdown', 'value')]
@@ -224,11 +200,8 @@ def update_overall_line_chart(selected_value):
     )
     return overall_line_chart
 
-<<<<<<< HEAD
 
-=======
 # Callback to update the bar chart for a selected channel and value type
->>>>>>> 4c2d15e5042af45d5db0b55cb337af31faf14a7b
 @callback(
     Output('comment-bar-chart', 'figure'),
     [Input('channel-dropdown', 'value'),
@@ -263,11 +236,8 @@ def update_bar_chart(selected_channel, selected_value):
 
     return comment_fig
 
-<<<<<<< HEAD
 
-=======
 # Callback to update the selected comment bar chart based on user clicks
->>>>>>> 4c2d15e5042af45d5db0b55cb337af31faf14a7b
 @callback(
     Output('selected-comment-bar-chart', 'figure'),
     [Input('comment-bar-chart', 'clickData'),

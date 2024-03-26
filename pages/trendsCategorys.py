@@ -9,11 +9,8 @@ import plotly.express as px
 from dash import dcc, html, callback
 from geopy.geocoders import Nominatim
 from dash.dependencies import Input, Output
-<<<<<<< HEAD
 from datetime import datetime, timedelta
 
-=======
->>>>>>> 4c2d15e5042af45d5db0b55cb337af31faf14a7b
 
 # Register the page with the specified name
 dash.register_page(__name__, name='Trends')

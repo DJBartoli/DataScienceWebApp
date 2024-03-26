@@ -1,30 +1,18 @@
-<<<<<<< HEAD
-=======
-from datetime import datetime, timedelta
-
->>>>>>> 4c2d15e5042af45d5db0b55cb337af31faf14a7b
 import pandas as pd
 
 import dash
-import dash_bootstrap_components as dbc
 import plotly.express as px
-
-<<<<<<< HEAD
-from dash.dependencies import Input, Output
-from dash import dcc, html, callback
-
-=======
 import dash_bootstrap_components as dbc
+
+from dash import dcc, html, callback
 from dash.dependencies import Input, Output
->>>>>>> 4c2d15e5042af45d5db0b55cb337af31faf14a7b
 
 # Register the page with the specified name
-dash.register_page(__name__,  name='Video Length')
+dash.register_page(__name__, name='Video Length')
 
 # Load original and filtered video length data
 video_length_data = pd.read_csv('./data/videoLength/VideoLengthData.csv')
 filtered_video_length_data = pd.read_csv('./data/videoLength/Filtered_VideoLengthData.csv')
-
 
 # ///////////////Layout//////////////////
 
@@ -71,7 +59,8 @@ layout = html.Div([
     dbc.Row([
         dbc.Col(dcc.Graph(id='video-length-lineplot'),
                 width={'size': 6, 'offset': 1},
-                style={'padding': '5px', 'background-color': '#d1d1d1', 'border-radius': '10px', 'box-shadow': '0px 2px 5px #949494'},
+                style={'padding': '5px', 'background-color': '#d1d1d1', 'border-radius': '10px',
+                       'box-shadow': '0px 2px 5px #949494'},
                 ),
         dbc.Col(html.H5(id='text-output'),
                 width=4
@@ -83,7 +72,8 @@ layout = html.Div([
     dbc.Row([
         dbc.Col(dcc.Graph(id='video-length-bar'),
                 width={'size': 6, 'offset': 1},
-                style={'padding': '5px', 'background-color': '#d1d1d1', 'border-radius': '10px', 'box-shadow': '0px 2px 5px #949494'},
+                style={'padding': '5px', 'background-color': '#d1d1d1', 'border-radius': '10px',
+                       'box-shadow': '0px 2px 5px #949494'},
                 ),
         dbc.Col(html.H5('''
                 In the upper graph, it is evident how the average video duration significantly decreases in the 'Film & Animation' category,
@@ -153,7 +143,6 @@ def update_graphs(selected_data):
         height=550,
     )
     bar_fig.update_yaxes(tickvals=[], ticktext=[])
-    
 
     line_fig = px.line(
         data_to_use,

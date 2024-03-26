@@ -1,6 +1,8 @@
 import dash
-from dash import dcc, html, callback
 import dash_bootstrap_components as dbc
+
+from dash import dcc, html, callback
+
 
 dash.register_page(__name__, name='Imprint')
 
