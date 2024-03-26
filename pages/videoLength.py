@@ -1,17 +1,12 @@
-import os
-from datetime import datetime, timedelta
-import json
-
 import pandas as pd
+
 import dash
-from dash import dcc, html, callback
+import dash_bootstrap_components as dbc
 import plotly.express as px
 
-from geopy.geocoders import Nominatim
-import dash_bootstrap_components as dbc
 from dash.dependencies import Input, Output
-import json
-import dash_bootstrap_components as dbc
+from dash import dcc, html, callback
+
 
 dash.register_page(__name__,  name='Video Length')
 

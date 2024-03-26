@@ -1,6 +1,8 @@
 import dash
-from dash import dcc, html
 import dash_bootstrap_components as dbc
+
+from dash import dcc, html
+
 
 app = dash.Dash(__name__, use_pages=True)
 

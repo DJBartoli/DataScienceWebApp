@@ -1,12 +1,9 @@
-import os
-
 import pandas as pd
+import plotly.express as px
 
 import dash
 import dash_bootstrap_components as dbc
 
-import plotly.express as px
-from _plotly_utils.png import Image
 from dash import dcc, html, callback
 from dash.dependencies import Input, Output
 
@@ -109,10 +106,10 @@ layout = html.Div([
         ),
         dbc.Col(
             children=[
-                html.H5('''As you can see 'joy' and 'sadness' are the both dominating emotions in every case. The 
-                dominance of joy can be explained,because it is the only positive conotaded emotion. Another reason 
-                could be the sarcastic nature of comment threads, which can be difficult for the Ai to classify 
-                corectly, because sarcasm relies so much on context.''')
+                html.H5('''As you can see, 'joy' and 'Sadness' are the two dominant emotions in each case. The 
+                dominance of joy can be explained by the fact that it is the only positive emotion. Another reason 
+                could be the sarcastic nature of the comment threads, which can be difficult for the AI to classify 
+                correctly because sarcasm depends so much on context.''')
             ],
             width={'size': 2},
             style={'margin-top': '20px'}

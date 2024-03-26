@@ -1,22 +1,12 @@
-import os
-from datetime import datetime, timedelta
-import json
-
 import pandas as pd
 import dash
-from dash import dcc, html, callback
-from dash.exceptions import PreventUpdate
-import plotly.express as px
+
 import plotly.graph_objects as go
-
-from geopy.geocoders import Nominatim
 import dash_bootstrap_components as dbc
+
 from dash.dependencies import Input, Output
-import json
-import dash_bootstrap_components as dbc
+from dash import dcc, html, callback
 
-import numpy as np
-import random
 
 dash.register_page(__name__,  name='Categories Interactions')
 
