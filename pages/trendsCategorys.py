@@ -9,19 +9,24 @@ import plotly.express as px
 from dash import dcc, html, callback
 from geopy.geocoders import Nominatim
 from dash.dependencies import Input, Output
+<<<<<<< HEAD
 from datetime import datetime, timedelta
 
+=======
+>>>>>>> 4c2d15e5042af45d5db0b55cb337af31faf14a7b
 
+# Register the page with the specified name
 dash.register_page(__name__, name='Trends')
 
+# Initialize geolocator for country coordinates
 geolocator = Nominatim(user_agent="country_locator")
 
-
+# Load Europe GeoJSON data
 with open('data/europe.geojson', encoding='utf-8') as f:
     geojson_data = json.load(f)
 
+# Define data folder and EU countries ISO2 codes
 data_folder = 'data/Trends100vRegions'
-
 eu_countries_iso2 = {
     'Austria': 'AT',
     'Australia': 'AU',
@@ -60,11 +65,14 @@ eu_countries_iso2 = {
     'USA': 'US',
 }
 
+# Read category options from a CSV file
 category_options = pd.read_csv('data/Categories.csv')
 
+# Load data from CSV files in the specified folder
 file_list = os.listdir(data_folder)
 dfs = []
 
+# Concatenate all CSV files into a single DataFrame
 for file_name in file_list:
     if file_name.endswith('.csv'):
         df = pd.read_csv(os.path.join(data_folder, file_name))
@@ -72,7 +80,7 @@ for file_name in file_list:
         dfs.append(df)
 weekly_df = pd.concat(dfs, ignore_index=True)
 
-
+# Function to get coordinates of a country
 def get_country_coordinates(country):
     location = geolocator.geocode(country)
     if location:
@@ -80,7 +88,7 @@ def get_country_coordinates(country):
     else:
         return None, None
 
-
+# Load initial data for pie chart
 pie_data = pd.read_csv(f'{data_folder}/DE_category_distribution.csv')
 df_selected_date = pie_data[pie_data['Execution Date'] == '2024-03-15']
 selected_pie_data = df_selected_date.groupby('Category Title')['Quantity'].sum().reset_index()
@@ -88,8 +96,11 @@ pie_first_data = px.pie(selected_pie_data, values='Quantity', names='Category Ti
                         hover_data={'Category Title': False, 'Quantity': True}, hover_name='Category Title')
 pie_first_data.update_traces(hovertemplate='Quantity')
 
-#///////////////Layout//////////////////
+
+# ///////////////Layout//////////////////
+
 layout = html.Div([
+    # Header
     dbc.Row(
         [
             dbc.Col(
@@ -98,6 +109,7 @@ layout = html.Div([
             ),
         ]
     ),
+    # Description
     dbc.Row(dbc.Col(html.H5('''
                     Here, you can observe the distribution of categories in the top 100 videos per day and country.
                     The countries available for selection include all EU member states and a selection of interesting countries from each additional continent.
@@ -110,6 +122,7 @@ layout = html.Div([
                     '''),
                     ),
             ),
+     # Dropdowns for country and date selection
     dbc.Row([
         dbc.Col(
             dcc.Dropdown(
@@ -122,6 +135,7 @@ layout = html.Div([
             style={'color': '#262626'},
             width={'size': 2, 'offset': 1, 'order': 1}
         ),
+        # Date picker
         dbc.Col(
             dcc.DatePickerSingle(
                 id='date-picker',
@@ -133,6 +147,7 @@ layout = html.Div([
             width={'size': 1, 'offset': 1, 'order': 0}
         ),
     ]),
+    # Pie chart and map graph
     dbc.Row([
         dbc.Col(
             dcc.Graph(id='pie-chart', figure=pie_first_data),
@@ -153,6 +168,7 @@ layout = html.Div([
     ],
     style={'height':'50px'},
     ),
+    # Description for weekly graph
     dbc.Row([
         dbc.Col(html.H5('''
                 Here, you can view the distribution of individual
@@ -164,6 +180,7 @@ layout = html.Div([
     ],
     style={'height':'100px'},
     align="start",),
+    # Dropdown for category selection
     dbc.Row([
         dbc.Col(dcc.Dropdown(
             id='category-dropdown',
@@ -183,6 +200,7 @@ layout = html.Div([
         ),
         # dbc.Col(dcc.Graph(id='weekly-graph'), width=4)
     ]),
+    # Weekly graph and description
     dbc.Row([
         dbc.Col(dcc.Graph(id='weekly-graph'), width={'size':4,'offset':1},
             style={'padding': '5px', 'background-color': '#d1d1d1', 'border-radius': '10px', 'box-shadow': '0px 2px 5px #949494'},
@@ -202,13 +220,15 @@ layout = html.Div([
     ),
 ])
 
+
+# ///////////////Callbacks//////////////////
+
+# Callback to update weekly graph based on category and country selection
 @callback(
     Output('weekly-graph', 'figure'),
     [Input('category-dropdown', 'value'),
     Input('country-dropdown', 'value')]
 )
-
-
 def update_weeklygraph(selected_category, selected_country):
     if selected_category and selected_country:
         weekly_df['Execution Date'] = pd.to_datetime(weekly_df['Execution Date'])
@@ -228,6 +248,7 @@ def update_weeklygraph(selected_category, selected_country):
     else:
         return {}
 
+# Callback to update pie chart based on country and date selection
 @callback(
     Output('pie-chart', 'figure'),
     [Input('country-dropdown', 'value'),
@@ -293,7 +314,7 @@ def update_pie_chart(selected_country, selected_date):
     )
     return pie
 
-
+# Callback to update map graph based on country selection
 @callback(
     Output('map-graph', 'figure'),
     [Input('country-dropdown', 'value')]

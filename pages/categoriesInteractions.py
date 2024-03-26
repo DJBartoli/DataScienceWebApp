@@ -10,13 +10,13 @@ from dash import dcc, html, callback
 
 dash.register_page(__name__,  name='Categories Interactions')
 
-# Load CSVs
+# Loading CSVs required for this page.
 
 catdf = pd.read_csv('data/duration/categoryInteractions.csv')
 
 catdf2 = pd.read_csv('data/categoryData/Categories_Formatted.csv')
 
-# Barchart
+# Creating the first barchart.
 
 fig = go.Figure(data=[
     go.Bar( name='Average Likes', x=catdf['Category'], y=catdf['Average Likes']),
@@ -34,19 +34,28 @@ fig.update_yaxes(title='Interactions per 1000 Views')
 
 layout = html.Div(
 
-    dbc.Row([
+    dbc.Row(
+        
+        [
+
+        # Title for this page.
+        
         dbc.Col(
             html.H2('Viewer Interaction in Different Categories', style={'color': '#dd2b2b'}),
                 width={'size': 5, 'offset': 1},
                 style={'height':'80px'},
         ),
 
+        # Short site description.
+        
         dbc.Row(dbc.Col(
                 html.H5('The charts on this page show the differences in viewer engagement across different categories.', ),
                 width={'size': 7, 'offset': 1},
                 style={'height':'80px'},
             )),
 
+            # Inserting the first barchart.
+            
             dbc.Row([
                 dbc.Col(dcc.Graph(
                 id='category-bar', figure=fig),
@@ -54,6 +63,9 @@ layout = html.Div(
                 style={'padding': '5px', 'background-color': '#d1d1d1', 'border-radius': '10px', 'box-shadow': '0px 2px 5px #949494'},
                 
                 ),
+
+            # Text next to the first figure.
+            
             dbc.Col(html.H5('''
                         This bar chart shows the average likes and comments in selected categories.
                         To obtain this data, we selected 4 to 5 channels per category and analyzed the video information for a total of 1000 videos per category.
@@ -66,20 +78,28 @@ layout = html.Div(
                     '''))
             ]),
 
+            # Seperation line between visualizations.
+            
             dbc.Row([
                 dbc.Col(html.Hr(style={'margin': '20px 0', 'border': 'none', 'border-top': '1px solid #ccc'}),
                 width={'size':10, 'offset':1}
                         )
             ],
+
             style={'height':'50px'},
+
             ),
 
+            # Title for the second figure.
+            
             dbc.Col(
                 html.H2('Additional Data on Categories', style={'color': '#dd2b2b'}),
                 width={'size': 5, 'offset': 1},
                 style={'height':'70px'}
             ),
 
+            # Inserting the dropdown menu to change between barcharts.
+            
             dbc.Row(
                 dbc.Col(dcc.Dropdown(
                 id='category-drop',
@@ -95,8 +115,12 @@ layout = html.Div(
 
             ),
 
+            # Inserting an empty row to create a gap between dropdown menu and boxplots.
+            
             dbc.Row(dbc.Row(html.H5(),style={'height':'20px'})),
 
+            # Inserting the barcharts.
+            
             dbc.Row([
                 dbc.Col(dcc.Graph(
                 id='category-bar-2',),
@@ -104,6 +128,9 @@ layout = html.Div(
                 style={'padding': '5px', 'background-color': '#d1d1d1', 'border-radius': '10px', 'box-shadow': '0px 2px 5px #949494'},
                 
                 ),
+
+                # Text next to the second figure.
+
                 dbc.Col(html.H5('''
                         This bar chart contains some additional information about the chart above.
                         For every video, you can see the average views per video in the dataset,
@@ -129,8 +156,12 @@ layout = html.Div(
 
 # Callback Function
 
+# Function returns different barcharts, based on value received from the dropdown menu.
+
 def update_category_bar(selected_value) :
 
+    # Creating new dataframes with averages for each category.
+    
     vdf = catdf2.groupby('Title')['Video_Views'].mean().reset_index()
 
     sdf = catdf2.groupby('Title')['Seconds'].mean().reset_index()

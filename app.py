@@ -10,14 +10,16 @@ server = app.server
 
 app.layout = html.Div(
     [
+        # Header section
         html.Header([
             dbc.NavbarSimple(
                 children=[
+                    # Generating navigation links dynamically from the registered pages
                     dbc.NavItem(dbc.NavLink(page['name'], href=page['path']))
                     for page in dash.page_registry.values() if page['name'] != 'Imprint'
                 ],
                 brand="Visualizing YouTube",
-                brand_href="#",
+                brand_href="/",
                 color="#dd2b2b",
                 dark=True,
                 fixed='Top'
@@ -26,6 +28,7 @@ app.layout = html.Div(
         html.Hr(),
         dash.page_container,
 
+        # Footer section
         html.Footer([
             dbc.NavbarSimple(
                 children=[
@@ -42,8 +45,6 @@ app.layout = html.Div(
     ]
 )
 
-if __name__ == '__main__':
-    app.run_server(debug=True)
 # ------------------------------------------------------------------------------
 # Starting the Dash app
 if __name__ == "__main__":

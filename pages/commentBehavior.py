@@ -1,15 +1,26 @@
 import os
+<<<<<<< HEAD
+=======
+from datetime import datetime, timedelta
+
+>>>>>>> 4c2d15e5042af45d5db0b55cb337af31faf14a7b
 import pandas as pd
 
 import dash
 import dash_bootstrap_components as dbc
 import plotly.express as px
 
+<<<<<<< HEAD
 from dash.dependencies import Input, Output
 from dash import dcc, html, callback
+=======
+import dash_bootstrap_components as dbc
+from dash.dependencies import Input, Output
+>>>>>>> 4c2d15e5042af45d5db0b55cb337af31faf14a7b
 
 dash.register_page(__name__, name='Comment Behavior')
 
+# Define the list of YouTube channels for data retrieval
 channels = [
     'baldandbankrupt',
     'BestEverFoodReviewShow',
@@ -25,29 +36,48 @@ channels = [
     'YesTheory'
 ]
 
+# Define the directory path where the comment data is stored
 directory_path = "data/comments/"
 
+# List to hold DataFrames for each channel
 dataframes = []
 
+# Iterate through each channel to read and process its data
 for channel in channels:
     filepath = os.path.join(directory_path, channel, "development.csv")
+<<<<<<< HEAD
 
     if os.path.exists(filepath):
         df = pd.read_csv(filepath)
 
+=======
+    
+    # Check if the file exists
+    if os.path.exists(filepath):
+        df = pd.read_csv(filepath)
+        
+        # Aggregate daily statistics
+>>>>>>> 4c2d15e5042af45d5db0b55cb337af31faf14a7b
         daily_stats = df.groupby('Day').agg({
             'Average per Video': 'mean',
             'Relative Probability (%)': 'mean'
         })
         daily_stats = daily_stats.reset_index()
         daily_stats['Channel'] = channel
+<<<<<<< HEAD
 
+=======
+        
+        # Append the DataFrame to the list
+>>>>>>> 4c2d15e5042af45d5db0b55cb337af31faf14a7b
         dataframes.append(daily_stats)
     else:
-        print(f"Datei 'development.csv' für den Kanal '{channel}' nicht gefunden.")
+        print(f"File 'development.csv' for channel '{channel}' not found.")
 
+# Combine all DataFrames into one
 combined_df = pd.concat(dataframes)
 
+# Aggregate overall averages
 average_overall = combined_df.groupby('Day').agg({
     'Average per Video': 'mean',
     'Relative Probability (%)': 'mean'
@@ -58,6 +88,7 @@ average_overall = average_overall[average_overall['Day'] <= 30]
 # ///////////////Layout//////////////////
 
 layout = html.Div([
+    # Header
     dbc.Row(
         [
             dbc.Col(
@@ -66,6 +97,7 @@ layout = html.Div([
             ),
         ]
     ),
+    # Description
     dbc.Row(
         [
             dbc.Col(
@@ -79,6 +111,7 @@ layout = html.Div([
         ],
         style={'height': '100px'}
     ),
+    # Dropdown for selecting value type
     dbc.Row([
         dbc.Col(dcc.Dropdown(
             id='value-dropdown',
@@ -95,6 +128,7 @@ layout = html.Div([
     ],
         style={'height': '50px'}
     ),
+    # Overall Line Chart
     dbc.Row([
         dbc.Col(dcc.Graph(id='overall-line-chart'), width={'size': 8, 'offset': 1},
                 style={'padding': '5px', 'background-color': '#d1d1d1', 'border-radius': '10px',
@@ -107,6 +141,7 @@ layout = html.Div([
                 width=2
                 )
     ]),
+    # Separator
     dbc.Row([
         dbc.Col(html.Hr(style={'margin': '20px 0', 'border': 'none', 'border-top': '1px solid #ccc'}),
                 width={'size': 10, 'offset': 1}
@@ -114,6 +149,7 @@ layout = html.Div([
     ],
         style={'height': '50px'},
     ),
+    # Channel Selection Description
     dbc.Row([
         dbc.Col(html.H5('''
                 In this section, you can take a closer look at what the comment behavior is like on the selected channels.
@@ -124,6 +160,7 @@ layout = html.Div([
     ],
         style={'height': '120px'}
     ),
+    # Channel Dropdown
     dbc.Row([
         dbc.Col(dcc.Dropdown(
             id='channel-dropdown',
@@ -140,6 +177,7 @@ layout = html.Div([
     ],
         style={'height': '50px'}
     ),
+    # Bar Chart for Channel Comments
     dbc.Row([
         dbc.Col(dcc.Graph(id='comment-bar-chart'), width={'size': 5, 'offset': 1},
                 style={'padding': '5px', 'background-color': '#d1d1d1', 'border-radius': '10px',
@@ -154,6 +192,12 @@ layout = html.Div([
 ])
 
 
+<<<<<<< HEAD
+=======
+# ///////////////Callbacks//////////////////
+
+# Callback to update overall line chart
+>>>>>>> 4c2d15e5042af45d5db0b55cb337af31faf14a7b
 @callback(
     Output('overall-line-chart', 'figure'),
     [Input('value-dropdown', 'value')]
@@ -180,7 +224,11 @@ def update_overall_line_chart(selected_value):
     )
     return overall_line_chart
 
+<<<<<<< HEAD
 
+=======
+# Callback to update the bar chart for a selected channel and value type
+>>>>>>> 4c2d15e5042af45d5db0b55cb337af31faf14a7b
 @callback(
     Output('comment-bar-chart', 'figure'),
     [Input('channel-dropdown', 'value'),
@@ -215,7 +263,11 @@ def update_bar_chart(selected_channel, selected_value):
 
     return comment_fig
 
+<<<<<<< HEAD
 
+=======
+# Callback to update the selected comment bar chart based on user clicks
+>>>>>>> 4c2d15e5042af45d5db0b55cb337af31faf14a7b
 @callback(
     Output('selected-comment-bar-chart', 'figure'),
     [Input('comment-bar-chart', 'clickData'),

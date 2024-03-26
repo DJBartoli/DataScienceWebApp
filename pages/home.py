@@ -1,8 +1,17 @@
 import dash
 import dash_bootstrap_components as dbc
 from dash import dcc, html
+<<<<<<< HEAD
+=======
+
+import dash_bootstrap_components as dbc
+from dash.dependencies import Input, Output
+>>>>>>> 4c2d15e5042af45d5db0b55cb337af31faf14a7b
 
 dash.register_page(__name__, path='/')
+
+
+# ///////////////Layout//////////////////
 
 layout = html.Div([
     html.H1('Introducing the YouTube API', style={'text-align': 'center', 'color': '#dd2b2b'}),
@@ -27,9 +36,15 @@ layout = html.Div([
                     )
         ]
     ),
+<<<<<<< HEAD
     dbc.Row(dbc.Col(html.H1('Topics with Research Questions'), className='text-center align-self-end',
                     style={'color': '#dd2b2b'})),
     dbc.Row(style={'height': '50px'}),
+=======
+    # Panels for topics and research questions
+    dbc.Row(dbc.Col(html.H1('Topics with Research Questions'),className='text-center align-self-end', style={'color': '#dd2b2b'})),
+    dbc.Row(style={'height':'50px'}),
+>>>>>>> 4c2d15e5042af45d5db0b55cb337af31faf14a7b
     dbc.Row(
         [
             dbc.Col(
@@ -58,6 +73,7 @@ layout = html.Div([
             ),
             dbc.Col(width=1),
             dbc.Col(
+<<<<<<< HEAD
                 [html.Div(html.H4("Content Analysis & Engagement")),
                  html.Hr(style={'margin': '10px 0', 'border': 'none', 'border-top': '1px solid #ccc'}),
                  html.Ul([
@@ -76,6 +92,25 @@ layout = html.Div([
                 width={'size': 2, 'offset': 0},
                 className='text-center',
             ),
+=======
+                [   html.Div(html.H4("Content Analysis & Engagement")),
+                    html.Hr(style={'margin': '10px 0', 'border': 'none', 'border-top': '1px solid #ccc'}),
+                    html.Ul([
+                        html.Li(['How does the length of a Youtube Video affect the viewers engagement measured by likes and comments? ',
+                        html.A("Here", href="/durationinteractions")],
+                        style={'text-align': 'left'}),
+                        html.Br(),
+                        html.Li(['How has the average video length developed over the last 10 years? ',
+                        html.A("Here", href="/videolength")],
+                        style={'text-align': 'left'}),
+                    ])
+                ],
+                        style={'padding': '8px', 'background-color': '#2e2d2d',
+                        'border-radius': '10px', 'box-shadow': '0px 2px 5px #4d4c4c'},
+                        width={'size':2,'offset':0},
+                        className='text-center',
+                    ),
+>>>>>>> 4c2d15e5042af45d5db0b55cb337af31faf14a7b
             dbc.Col(width=1),
             dbc.Col([html.Div(html.H4("Trends & Insights")),
                      html.Hr(style={'margin': '10px 0', 'border': 'none', 'border-top': '1px solid #ccc'}),

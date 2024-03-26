@@ -1,19 +1,35 @@
+<<<<<<< HEAD
+=======
+from datetime import datetime, timedelta
+
+>>>>>>> 4c2d15e5042af45d5db0b55cb337af31faf14a7b
 import pandas as pd
 
 import dash
 import dash_bootstrap_components as dbc
 import plotly.express as px
 
+<<<<<<< HEAD
 from dash.dependencies import Input, Output
 from dash import dcc, html, callback
 
+=======
+import dash_bootstrap_components as dbc
+from dash.dependencies import Input, Output
+>>>>>>> 4c2d15e5042af45d5db0b55cb337af31faf14a7b
 
+# Register the page with the specified name
 dash.register_page(__name__,  name='Video Length')
 
-video_length_data = pd.read_csv('./VideoLengthData.csv')
-filtered_video_length_data = pd.read_csv('./Filtered_VideoLengthData.csv')
+# Load original and filtered video length data
+video_length_data = pd.read_csv('./data/videoLength/VideoLengthData.csv')
+filtered_video_length_data = pd.read_csv('./data/videoLength/Filtered_VideoLengthData.csv')
+
+
+# ///////////////Layout//////////////////
 
 layout = html.Div([
+    # Header
     dbc.Row(
         [
             dbc.Col(
@@ -22,85 +38,74 @@ layout = html.Div([
             ),
         ]
     ),
-    dbc.Row(dbc.Col(html.H5('''
-                        The following charts illustrate the average duration of videos across various categories over the period from 2013 to 2023 in the USA.
-                        Each line or area represents a distinct category.
-                        This analysis focuses on data from the United States, as it accounts for the highest traffic on the platform, providing a comprehensive overview.
-                    '''),
-                    width={'size': 4, 'offset': 1}
-                    ),
-            ),
-    dbc.Row(
-        [
-            dbc.Col(dcc.Dropdown(id='data-dropdown',
-                                 options=[
-                                     {'label': 'Original Data', 'value': 'original_data'},
-                                     {'label': 'Filtered Data', 'value': 'filtered_data'},
-                                 ],
-                                 value='original_data',
-                                 clearable=False,
-                                 searchable=False,
-                                 ),
-                    style={'color': '#262626'},
-                    width={'size': 2, 'offset': 5, 'order': 0}
-                    ),
-            dbc.Col(
-            ),
-        ]
-    ),
-    dbc.Row(
-        [
-            dbc.Col(html.H1()
-                    ),
-            dbc.Col(
-            ),
-        ]
-    ),
-    dbc.Row(
-        [
-            dbc.Col(dcc.Graph(id='video-length-lineplot'),
-                    width={'size': 6, 'offset': 1},
-                    style={'padding': '5px', 'background-color': '#d1d1d1', 'border-radius': '10px', 'box-shadow': '0px 2px 5px #949494'},
-                    ),
-            dbc.Col(html.H5(id='text-output'),
-                    width=4
-                    ),
-        ],
-    ),
-    dbc.Row(
-        [
-            dbc.Col(html.H1()
-                    ),
-            dbc.Col(
-            ),
-        ]
-    ),
-    dbc.Row(
-        [
-            dbc.Col(dcc.Graph(id='video-length-bar'),
-                    width={'size': 6, 'offset': 1},
-                    style={'padding': '5px', 'background-color': '#d1d1d1', 'border-radius': '10px', 'box-shadow': '0px 2px 5px #949494'},
-                    ),
-            dbc.Col(html.H5('''
-                    In the upper graph, it is evident how the average video duration significantly decreases in the 'Film & Animation' category,
-                    as a large number of short films are included in the most-viewed videos over time. In the lower diagram, this category has been filtered out,
-                    resulting in a much clearer trend. Up until the Short Release in 2021, the average video duration noticeably increases,
-                    attributed to improved internet connectivity and consequently faster upload times.
-                    '''),
-                    width=4
-                    ),
-        ]
-    ),
+    # Description
+    dbc.Row([
+        dbc.Col(
+            html.H5('''
+                    The following charts illustrate the average duration of videos across various categories over the period from 2013 to 2023 in the USA.
+                    Each line or area represents a distinct category.
+                    This analysis focuses on data from the United States, as it accounts for the highest traffic on the platform, providing a comprehensive overview.
+                '''),
+            width={'size': 4, 'offset': 1}
+        ),
+    ]),
+    # Dropdown to select data type
+    dbc.Row([
+        dbc.Col(dcc.Dropdown(id='data-dropdown',
+                             options=[
+                                 {'label': 'Original Data', 'value': 'original_data'},
+                                 {'label': 'Filtered Data', 'value': 'filtered_data'},
+                             ],
+                             value='original_data',
+                             clearable=False,
+                             searchable=False,
+                             ),
+                style={'color': '#262626'},
+                width={'size': 2, 'offset': 5, 'order': 0}
+                ),
+        dbc.Col(),
+    ]),
+    # Empty row
+    dbc.Row([dbc.Col(html.H1()), dbc.Col()]),
+    # Graphs and text output
+    dbc.Row([
+        dbc.Col(dcc.Graph(id='video-length-lineplot'),
+                width={'size': 6, 'offset': 1},
+                style={'padding': '5px', 'background-color': '#d1d1d1', 'border-radius': '10px', 'box-shadow': '0px 2px 5px #949494'},
+                ),
+        dbc.Col(html.H5(id='text-output'),
+                width=4
+                ),
+    ]),
+    # Empty row
+    dbc.Row([dbc.Col(html.H1()), dbc.Col()]),
+    # Graphs and description
+    dbc.Row([
+        dbc.Col(dcc.Graph(id='video-length-bar'),
+                width={'size': 6, 'offset': 1},
+                style={'padding': '5px', 'background-color': '#d1d1d1', 'border-radius': '10px', 'box-shadow': '0px 2px 5px #949494'},
+                ),
+        dbc.Col(html.H5('''
+                In the upper graph, it is evident how the average video duration significantly decreases in the 'Film & Animation' category,
+                as a large number of short films are included in the most-viewed videos over time. In the lower diagram, this category has been filtered out,
+                resulting in a much clearer trend. Up until the Short Release in 2021, the average video duration noticeably increases,
+                attributed to improved internet connectivity and consequently faster upload times.
+                '''),
+                width=4
+                ),
+    ])
 ])
 
 
+# ///////////////Callbacks//////////////////
+
+# Callback to update graphs and text output based on dropdown selectio
 @callback(
     [Output('video-length-bar', 'figure'),
      Output('video-length-lineplot', 'figure'),
      Output('text-output', 'children')],
     [Input('data-dropdown', 'value')]
 )
-# Graphs for the Video Length Development
 def update_graphs(selected_data):
     if selected_data == 'original_data':
         data_to_use = video_length_data
